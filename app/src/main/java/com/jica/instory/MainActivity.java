@@ -1,17 +1,15 @@
 package com.jica.instory;
 
-import android.arch.lifecycle.LiveData;
 import android.content.Intent;
-import android.graphics.Movie;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jica.instory.adapter.RecyclerViewAdapter;
 import com.jica.instory.database.AppDatabase;
@@ -28,8 +26,37 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewAdapter rvAdapter;
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.edit:
+                //프로필들을 편집 한다.
+                return true;
+            case R.id.group:
+                Intent intentGroup = new Intent(getApplicationContext(),GroupActivity.class);
+                startActivity(intentGroup);
+                return true;
+            case R.id.setting:
+                Intent intentSetting = new Intent(getApplicationContext(),SettingActivity.class);
+                startActivity(intentSetting);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        //refresh recycler view
         profileList = profileDao.getAll();
         rvAdapter.setProfileList(profileList);
         rvAdapter.notifyDataSetChanged();
@@ -54,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         profileDao = AppDatabase.getInstance(this).profileDao();
         profileList = profileDao.getAll();
 
-        // show to RecyclerView
+        // send to RecyclerViewAdapter
         rvAdapter = new RecyclerViewAdapter(profileList);
         rv = findViewById(R.id.profile_list);
         rv.setAdapter(rvAdapter);

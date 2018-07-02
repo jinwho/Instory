@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jica.instory.database.AppDatabase;
 import com.jica.instory.database.Profile;
@@ -34,9 +35,15 @@ public class AddProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Profile p = new Profile();
-                p.setRating(ratingBar.getRating());
-                p.setName(name.getText().toString());
+                String fName = name.getText().toString();
+                if (fName.equals("")) {
+                    Toast.makeText(AddProfileActivity.this, "name field is empty", Toast.LENGTH_SHORT).show();
+                    return;//do not add unless there is name;
+                }
+                p.setRating((int)ratingBar.getRating());
+                p.setName(fName);
                 p.setComment(comment.getText().toString());
+
                 profileDao.insertAll(p);
                 finish();
             }

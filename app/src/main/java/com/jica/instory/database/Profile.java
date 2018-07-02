@@ -9,7 +9,7 @@ public class Profile {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    private float rating;
+    private int rating;
     private String name;
     private String comment;
 
@@ -17,8 +17,12 @@ public class Profile {
     /*
     private String number;
     private String email;
-    private String address;
+    private String address; // 주소를 입력하는 쉬운 방법은 없음..
     private String birthday;
+    */
+
+    /*
+    group id를 가져야 함
     */
 
     public int getId() {
@@ -29,11 +33,11 @@ public class Profile {
         this.id = id;
     }
 
-    public float getRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(float rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 
