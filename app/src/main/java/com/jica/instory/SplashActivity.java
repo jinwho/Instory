@@ -21,7 +21,7 @@ public class SplashActivity extends Activity {
             @Override
             public void run() {
                 /* 메뉴액티비티를 실행하고 로딩화면을 죽인다.*/
-                Intent mainIntent = new Intent(SplashActivity.this,MainActivity.class);
+                Intent mainIntent = new Intent(getApplicationContext(),MainActivity.class);
                 mainIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(mainIntent);
                 finish();

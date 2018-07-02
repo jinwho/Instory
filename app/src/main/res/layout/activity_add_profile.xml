@@ -18,7 +18,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/default_profile" />
+        app:srcCompat="@drawable/default_profile"
+        android:contentDescription="@string/profile_photo" />
 
     <RatingBar
         android:id="@+id/ratingBar"
@@ -37,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginTop="300dp"
-        android:text="이름"
+        android:text="@string/name"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -57,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="한줄평"
+        android:text="@string/comment"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="@+id/textview_name"
         app:layout_constraintStart_toStartOf="@+id/textview_name"
@@ -79,7 +80,6 @@
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:onClick="addProfile"
         android:text="추가하기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

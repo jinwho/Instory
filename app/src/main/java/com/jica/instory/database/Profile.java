@@ -9,16 +9,16 @@ public class Profile {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    private int rating = 0;
+    private float rating;
     private String name;
     private String comment;
 
     // add later
     /*
-    private String phonenum;
+    private String number;
     private String email;
-    private String homeaddr;
-    private Date birthday;
+    private String address;
+    private String birthday;
     */
 
     public int getId() {
@@ -29,11 +29,11 @@ public class Profile {
         this.id = id;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface ProfileDao {
     @Query("SELECT * FROM profile")
-    LiveData<List<Profile>> getAll();
+    List<Profile> getAll();
 
     @Query("SELECT * FROM profile WHERE id IN (:userIds)")
     List<Profile> loadAllByIds(int[] userIds);

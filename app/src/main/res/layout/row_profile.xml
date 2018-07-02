@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/common_margin"
-    android:gravity="center_vertical"
+    android:gravity="center"
     android:orientation="horizontal"
     android:padding="@dimen/common_padding">
 
@@ -14,6 +14,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         app:srcCompat="@drawable/default_profile" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,15 +29,15 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal|center"
             android:text="이름"
-            android:textSize="18sp"
+            android:textAlignment="center"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
-        <TextView
+        <RatingBar
             android:id="@+id/rating"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal|center"
-            android:text="평가" />
+            android:isIndicator="true" />
 
     </LinearLayout>
 
@@ -47,5 +48,6 @@
         android:layout_weight="1"
         android:text="한줄평"
         android:textAlignment="center"
+        android:textSize="18sp"
         android:textStyle="italic" />
 </LinearLayout>
