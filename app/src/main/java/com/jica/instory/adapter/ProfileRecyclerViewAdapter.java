@@ -1,28 +1,31 @@
 package com.jica.instory.adapter;
 
-import android.graphics.Movie;
-import android.media.Rating;
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.jica.instory.MainActivity;
 import com.jica.instory.R;
+import com.jica.instory.ViewProfileActivity;
 import com.jica.instory.database.Profile;
 
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> {
+public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecyclerViewAdapter.ProfileRecyclerViewHolder> {
 
     private List<Profile> profileList;
 
-    class RecyclerViewHolder extends RecyclerView.ViewHolder {
+    class ProfileRecyclerViewHolder extends RecyclerView.ViewHolder{
         public TextView name,comment;
         public RatingBar rating;
-        public RecyclerViewHolder(View view) {
+        public ProfileRecyclerViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.name);
             rating = view.findViewById(R.id.rating);
@@ -30,7 +33,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
-    public RecyclerViewAdapter(List<Profile> profileList) {
+    public ProfileRecyclerViewAdapter(List<Profile> profileList) {
         this.profileList = profileList;
     }
 
@@ -44,17 +47,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @NonNull
     @Override
-    public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProfileRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_profile, parent, false);
-        return new RecyclerViewHolder(itemView);
+        return new ProfileRecyclerViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
-        Profile profile = profileList.get(position);
+    public void onBindViewHolder(@NonNull ProfileRecyclerViewHolder holder, final int position) {
+
+        final Profile profile = profileList.get(position);
         holder.name.setText(profile.getName());
         holder.comment.setText(profile.getComment());
         holder.rating.setRating(profile.getRating());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = v.getContext();
+                Intent intent = new Intent(context, ViewProfileActivity.class);
+                intent.putExtra("position", position);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

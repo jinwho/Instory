@@ -14,7 +14,10 @@ public interface ProfileDao {
     List<Profile> getAll();
 
     @Query("SELECT * FROM profile WHERE id IN (:userIds)")
-    List<Profile> loadAllByIds(int[] userIds);
+    List<Profile> getByIds(int[] userIds);
+
+    @Query("SELECT * FROM profile WHERE id IS :userId")
+    Profile getByID(int userId);
 
     @Query("SELECT * FROM profile WHERE name LIKE :name LIMIT 1")
     Profile findByName(String name);

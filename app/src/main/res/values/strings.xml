@@ -6,4 +6,7 @@
     <string name="main_menu_edit">편집</string>
     <string name="main_menu_group">그룹관리</string>
     <string name="main_menu_setting">설정</string>
+    <string name="profile_menu_edit">수정</string>
+    <string name="profile_menu_delete">삭제</string>
+    <string name="confirm">확인</string>
 </resources>

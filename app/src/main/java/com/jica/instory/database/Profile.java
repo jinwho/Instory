@@ -2,28 +2,24 @@ package com.jica.instory.database;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 
 @Entity
 public class Profile {
     @PrimaryKey(autoGenerate = true)
     private int id;
-
-    private int rating;
+    private int rating = 0;
     private String name;
-    private String comment;
+    private String comment = "";
 
-    // add later
-    /*
     private String number;
     private String email;
-    private String address; // 주소를 입력하는 쉬운 방법은 없음..
+    private String address; //google map으로 검색화면을 돌리거나 함
     private String birthday;
-    */
+    //private int groupID = 0 //all:0
 
-    /*
-    group id를 가져야 함
-    */
 
     public int getId() {
         return id;
@@ -55,5 +51,37 @@ public class Profile {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 }

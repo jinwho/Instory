@@ -11,7 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.jica.instory.adapter.RecyclerViewAdapter;
+import com.jica.instory.adapter.ProfileRecyclerViewAdapter;
 import com.jica.instory.database.AppDatabase;
 import com.jica.instory.database.Profile;
 import com.jica.instory.database.ProfileDao;
@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Profile> profileList = new ArrayList<>();
     private ProfileDao profileDao;
     private RecyclerView rv;
-    private RecyclerViewAdapter rvAdapter;
+    private ProfileRecyclerViewAdapter rvAdapter;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -37,15 +37,10 @@ public class MainActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.edit:
-                //프로필들을 편집 한다.
                 return true;
             case R.id.group:
-                Intent intentGroup = new Intent(getApplicationContext(),GroupActivity.class);
-                startActivity(intentGroup);
                 return true;
             case R.id.setting:
-                Intent intentSetting = new Intent(getApplicationContext(),SettingActivity.class);
-                startActivity(intentSetting);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -72,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), AddProfileActivity.class);
+                Intent intent = new Intent(getApplicationContext(), AddOrEditProfileActivity.class);
                 startActivity(intent);
             }
         });
@@ -81,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
         profileDao = AppDatabase.getInstance(this).profileDao();
         profileList = profileDao.getAll();
 
-        // send to RecyclerViewAdapter
-        rvAdapter = new RecyclerViewAdapter(profileList);
+        // send to ProfileRecyclerViewAdapter
+        rvAdapter = new ProfileRecyclerViewAdapter(profileList);
         rv = findViewById(R.id.profile_list);
         rv.setAdapter(rvAdapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
