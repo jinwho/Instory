@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.jica.instory.MainActivity;
 import com.jica.instory.R;
 import com.jica.instory.ViewProfileActivity;
 import com.jica.instory.database.Profile;
@@ -28,7 +26,7 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
         public ProfileRecyclerViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.name);
-            rating = view.findViewById(R.id.rating);
+            rating = view.findViewById(R.id.ratingBar);
             comment = view.findViewById(R.id.comment);
         }
     }

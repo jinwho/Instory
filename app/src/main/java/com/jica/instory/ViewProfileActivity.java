@@ -1,8 +1,6 @@
 package com.jica.instory;
 
-import android.app.ActionBar;
 import android.content.Intent;
-import android.media.Rating;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jica.instory.database.AppDatabase;
 import com.jica.instory.database.Profile;
@@ -32,7 +29,7 @@ public class ViewProfileActivity extends AppCompatActivity {
 
         TextView tvName = findViewById(R.id.name);
         TextView tvComment = findViewById(R.id.comment);
-        RatingBar rating = findViewById(R.id.rating);
+        RatingBar rating = findViewById(R.id.ratingBar);
 
         // position을 전달받아 해당 id를 가진 프로필을 DB로 검색한 후 뷰를 통해 보여준다.
         Intent intent = getIntent();

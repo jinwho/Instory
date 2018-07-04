@@ -10,16 +10,16 @@ import android.support.annotation.Nullable;
 public class Profile {
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private int rating = 0;
+    //private int groupID;
+
+    private int rating;
     private String name;
-    private String comment = "";
+    private String comment;
 
-    private String number;
+    private String phone;
     private String email;
-    private String address; //google map으로 검색화면을 돌리거나 함
+    private String address;
     private String birthday;
-    //private int groupID = 0 //all:0
-
 
     public int getId() {
         return id;
@@ -53,12 +53,12 @@ public class Profile {
         this.comment = comment;
     }
 
-    public String getNumber() {
-        return number;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getEmail() {
