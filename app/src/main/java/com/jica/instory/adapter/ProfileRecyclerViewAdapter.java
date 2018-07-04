@@ -53,7 +53,7 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProfileRecyclerViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull ProfileRecyclerViewHolder holder, int position) {
         final Profile profile = profileList.get(position);
         holder.name.setText(profile.getName());
         holder.comment.setText(profile.getComment());
@@ -64,9 +64,9 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
             public void onClick(View v) {
                 Context context = v.getContext();
                 Intent intent = new Intent(context, ViewProfileActivity.class);
-                //how can i send profile's ID ?
-                //this is error since ID has no value yet
-                //intent.putExtra("profile", profile.getId());
+                //probably give error
+                Toast.makeText(context, "profile.getId() : "+profile.getId(), Toast.LENGTH_SHORT).show();
+                //intent.putExtra("id",profile.getId());
                 context.startActivity(intent);
             }
         });

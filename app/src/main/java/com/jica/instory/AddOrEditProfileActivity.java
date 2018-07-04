@@ -22,6 +22,7 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
     private RatingBar ratingBar;
     private TextView name, comment;
     private Button button;
+    private int id;
 
     private static final int CAPTURE_PHOTO_FROM_CAMERA = 1;
     private static final int SELECT_IMAGE_FROM_GALLERY = 2;
@@ -54,9 +55,9 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
 
         //만약 extra 데이터가 있으면(수정하기 위해 호출되었다면) 해당 프로필 객체를 불러온다.
         Intent intent = getIntent();
-        if(intent.hasExtra("position")) {
-            int position = intent.getIntExtra("position",-1);
-            Profile profile = profileDao.getProfileById(position);
+        if(intent.hasExtra("id")) {
+            id = intent.getIntExtra("id",-1);
+            Profile profile = profileDao.getById(id);
             ratingBar.setRating(profile.getRating());
             name.setText(profile.getName());
             comment.setText(profile.getComment());

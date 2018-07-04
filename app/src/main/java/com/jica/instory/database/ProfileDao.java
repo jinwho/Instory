@@ -14,14 +14,14 @@ public interface ProfileDao {
     List<Profile> getAll();
 
     @Query("SELECT * FROM profile WHERE id IN (:userIds)")
-    List<Profile> getByIds(int[] userIds);
+    List<Profile> getByIds(Integer[] userIds);
 
     @Query("SELECT * FROM profile WHERE id IS :userId")
-    Profile getProfileById(int userId);
+    Profile getById(Integer userId);
 
     @Insert
     void insertAll(Profile... profiles);
 
     @Delete
-    void delete(Profile profile);
+    void deleteAll(Profile... profile);
 }
