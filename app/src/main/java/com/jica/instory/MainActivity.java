@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         //refresh recycler view
-        //profileList = profileDao.getAll();
+        profileList = profileDao.getAll();
         rvAdapter.setProfileList(profileList);
         rvAdapter.notifyDataSetChanged();
     }

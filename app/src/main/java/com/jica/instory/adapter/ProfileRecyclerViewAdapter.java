@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jica.instory.R;
 import com.jica.instory.ViewProfileActivity;
@@ -20,9 +21,10 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
 
     private List<Profile> profileList;
 
-    class ProfileRecyclerViewHolder extends RecyclerView.ViewHolder{
-        public TextView name,comment;
+    class ProfileRecyclerViewHolder extends RecyclerView.ViewHolder {
+        public TextView name, comment;
         public RatingBar rating;
+
         public ProfileRecyclerViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.name);
@@ -51,8 +53,8 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProfileRecyclerViewHolder holder, int position) {
-        Profile profile = profileList.get(position);
+    public void onBindViewHolder(@NonNull ProfileRecyclerViewHolder holder, final int position) {
+        final Profile profile = profileList.get(position);
         holder.name.setText(profile.getName());
         holder.comment.setText(profile.getComment());
         holder.rating.setRating(profile.getRating());
@@ -62,7 +64,9 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
             public void onClick(View v) {
                 Context context = v.getContext();
                 Intent intent = new Intent(context, ViewProfileActivity.class);
-                intent.putExtra("position", position);
+                //how can i send profile's ID ?
+                //this is error since ID has no value yet
+                //intent.putExtra("profile", profile.getId());
                 context.startActivity(intent);
             }
         });
