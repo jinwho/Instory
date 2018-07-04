@@ -17,10 +17,7 @@ public interface ProfileDao {
     List<Profile> getByIds(int[] userIds);
 
     @Query("SELECT * FROM profile WHERE id IS :userId")
-    Profile getByID(int userId);
-
-    @Query("SELECT * FROM profile WHERE name LIKE :name LIMIT 1")
-    Profile findByName(String name);
+    Profile getProfileById(int userId);
 
     @Insert
     void insertAll(Profile... profiles);

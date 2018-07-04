@@ -16,11 +16,11 @@ import com.jica.instory.database.AppDatabase;
 import com.jica.instory.database.Profile;
 import com.jica.instory.database.ProfileDao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private List<Profile> profileList = new ArrayList<>();
+
+    private List<Profile> profileList;
     private ProfileDao profileDao;
     private RecyclerView rv;
     private ProfileRecyclerViewAdapter rvAdapter;
@@ -34,9 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
         switch (item.getItemId()) {
-            case R.id.edit:
+            case R.id.modify:
                 return true;
             case R.id.group:
                 return true;
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         //refresh recycler view
-        profileList = profileDao.getAll();
+        //profileList = profileDao.getAll();
         rvAdapter.setProfileList(profileList);
         rvAdapter.notifyDataSetChanged();
     }

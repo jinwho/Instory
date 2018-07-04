@@ -51,12 +51,12 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProfileRecyclerViewHolder holder, final int position) {
-
-        final Profile profile = profileList.get(position);
+    public void onBindViewHolder(@NonNull ProfileRecyclerViewHolder holder, int position) {
+        Profile profile = profileList.get(position);
         holder.name.setText(profile.getName());
         holder.comment.setText(profile.getComment());
         holder.rating.setRating(profile.getRating());
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
