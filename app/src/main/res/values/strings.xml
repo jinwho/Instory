@@ -10,6 +10,7 @@
     <string name="profile_menu_delete">삭제</string>
     <string name="confirm">확인</string>
     <string name="cancel">취소</string>
+    <string name="save">저장</string>
     <string name="profile_phone">연락처</string>
     <string name="profile_email">이메일</string>
     <string name="profile_address">집주소</string>

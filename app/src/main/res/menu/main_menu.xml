@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/listedit"
+    <item android:id="@+id/profileedit"
         android:title="@string/main_menu_listedit" />
     <item android:id="@+id/group"
         android:title="@string/main_menu_group" />

@@ -1,10 +1,8 @@
 package com.jica.instory;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -63,26 +61,11 @@ public class ViewProfileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.listedit:
+            case R.id.profile_edit:
                 Intent intent = new Intent(this, AddOrEditProfileActivity.class);
                 intent.putExtra("id", id);
                 startActivity(intent);
                 finish();
-                return true;
-            case R.id.delete:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(R.string.delete_message)
-                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                profileDao.deleteAll(profile);
-                                finish();
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                //do nothing
-                            }
-                        }).create().show();
                 return true;
             case android.R.id.home:
                 finish();

@@ -2,9 +2,11 @@ package com.jica.instory;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -25,7 +27,6 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
     private ImageView profile_pic;
     private RatingBar ratingBar;
     private TextView name, comment;
-    private Button button;
 
     // 수정일 경우 ID가 필요하다.
     // if isEdit = true 수정한다.
@@ -43,11 +44,13 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
+        //actionBar.setDisplayUseLogoEnabled(true);
+        //actionBar.setDisplayShowHomeEnabled(true);
+
         //view 가져오기
         ratingBar = findViewById(R.id.ratingBar);
         name = findViewById(R.id.name);
         comment = findViewById(R.id.comment);
-        button = findViewById(R.id.button);
         profile_pic = findViewById(R.id.profile_pic);
 
         //사진공간이 클릭 되었을 때
@@ -78,6 +81,7 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
             id = intent.getIntExtra("id", -1);
             Profile profile = profileDao.getById(id);
             //가져온 프로필의 값을 view에 할당
+            //여기서 사진도 가져와서 보여주어야 한다.
             ratingBar.setRating(profile.getRating());
             name.setText(profile.getName());
             comment.setText(profile.getComment());
@@ -86,37 +90,12 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
         } else {
             isEdit = false;
         }
+    }
 
-        //확인 버튼을 누르면 DB에 저장한다.
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Profile profile = new Profile();
-                String fName = name.getText().toString();
-                //이름이 비었다면 토스트메세지를 띄운다.
-                if (fName.equals("")) {
-                    Toast.makeText(getApplicationContext(), "name field is empty", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                //view 에서 값을 얻어와 프로필 객체를 생성한다.
-
-                profile.setRating((int) ratingBar.getRating());
-                profile.setName(fName);
-                profile.setComment(comment.getText().toString());
-
-                //만약 수정하려고 한다면 삽입대신 업데이트한다.
-                if (isEdit) {
-                    //업데이트 일때만 id를 사용한다.
-                    profile.setId(id);
-                    profileDao.updateAll(profile);
-                } else {
-                    profileDao.insertAll(profile);
-                }
-                //프로필 id를 얻어서 숫자 폴더안에 profile.jpg 사진을 저장한다.
-                //사진이 없다면 그대로 냅둔다.
-                finish();
-            }
-        });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.profile_addedit_menu, menu);
+        return true;
     }
 
     //메뉴 : 뒤로가기 클릭하면 액티비티 종료함
@@ -125,6 +104,9 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                return true;
+            case R.id.add_edit_save:
+                onClickConfirm();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -135,6 +117,33 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //사진을 가져오면 프로필 사진에 사진을 보여준다.
+    }
+
+    void onClickConfirm(){
+        Profile profile = new Profile();
+        String fName = name.getText().toString();
+        //이름이 비었다면 토스트메세지를 띄운다.
+        if (fName.equals("")) {
+            Toast.makeText(getApplicationContext(), "name field is empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //view 에서 값을 얻어와 프로필 객체를 생성한다.
+
+        profile.setRating((int) ratingBar.getRating());
+        profile.setName(fName);
+        profile.setComment(comment.getText().toString());
+
+        //만약 수정하려고 한다면 삽입대신 업데이트한다.
+        if (isEdit) {
+            //업데이트 일때만 id를 사용한다.
+            profile.setId(id);
+            profileDao.updateAll(profile);
+        } else {
+            profileDao.insertAll(profile);
+        }
+        //프로필 id를 얻어서 숫자 폴더안에 profile.jpg 사진을 저장한다.
+        //사진이 없다면 그대로 냅둔다.
+        finish();
     }
 
 

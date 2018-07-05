@@ -26,7 +26,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".ViewProfileActivity" />
         <activity android:name=".AddOrEditProfileActivity" />
-
+        <activity android:name=".GroupActivity" />
     </application>
 
 </manifest>

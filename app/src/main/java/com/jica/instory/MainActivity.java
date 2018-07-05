@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.listedit:
+            case R.id.profileedit:
                 return true;
             case R.id.group:
                 return true;
