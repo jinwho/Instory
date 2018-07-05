@@ -1,16 +1,20 @@
 package com.jica.instory.database;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 
-@Entity
+@Entity(foreignKeys = @ForeignKey(entity = Group.class,
+        parentColumns = "gid",
+        childColumns = "gid"))
 public class Profile {
     @PrimaryKey(autoGenerate = true)
-    private Integer id;
-    //private Integer groupID;
+    private Integer pid;
+    //해당 하는 그룹의 ID
+    private Integer gid;
 
     //레이팅,이름,한줄평
     private int rating;
@@ -24,12 +28,21 @@ public class Profile {
     private String birthday;
 
     //getters, setters
-    public Integer getId() {
-        return id;
+
+    public Integer getPid() {
+        return pid;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
+    public Integer getGid() {
+        return gid;
+    }
+
+    public void setGid(Integer gid) {
+        this.gid = gid;
     }
 
     public int getRating() {

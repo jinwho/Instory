@@ -15,15 +15,15 @@ public interface ProfileDao {
     @Query("SELECT * FROM profile")
     List<Profile> getAll();
 
-    //여러개의 ID를 입력받아 프로필 목록을 리턴
-    @Query("SELECT * FROM profile WHERE id IN (:Ids)")
-    List<Profile> getByIds(Integer[] Ids);
+    //여러개의 ID -> 특정 프로필 목록       //그룹으로 바꿔야 할 듯
+    @Query("SELECT * FROM profile WHERE pid IN (:pids)")
+    List<Profile> getByIds(Integer[] pids);
 
-    //ID를 입력받아 프로필을 리턴
-    @Query("SELECT * FROM profile WHERE id IS :Id")
-    Profile getById(Integer Id);
+    //ID -> 프로필
+    @Query("SELECT * FROM profile WHERE pid IS :pid")
+    Profile getById(Integer pid);
 
-    //삽입하기
+    //삽입
     @Insert
     void insertAll(Profile... profiles);
 
@@ -31,7 +31,7 @@ public interface ProfileDao {
     @Update
     void updateAll(Profile... profiles);
 
-    //삭제하기
+    //삭제
     @Delete
     void deleteAll(Profile... profiles);
 }
