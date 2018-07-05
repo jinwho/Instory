@@ -42,7 +42,7 @@ public class ViewProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();
         id = intent.getIntExtra("id", -1);
         //DB id 검색
-        profile = profileDao.getById(id);
+        profile = profileDao.get(id);
         //view 값 할당
         tvName.setText(profile.getName());
         tvComment.setText(profile.getComment());

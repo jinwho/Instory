@@ -4,21 +4,21 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity
-public class Group {
+public class Band {
     @PrimaryKey(autoGenerate = true)
-    private Integer gid;
+    private Integer bid;
 
     private String name;
 
 
     //getters, setters
 
-    public Integer getGid() {
-        return gid;
+    public Integer getBid() {
+        return bid;
     }
 
-    public void setGid(Integer gid) {
-        this.gid = gid;
+    public void setBid(Integer bid) {
+        this.bid = bid;
     }
 
     public String getName() {

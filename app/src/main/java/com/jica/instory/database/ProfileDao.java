@@ -11,17 +11,17 @@ import java.util.List;
 
 @Dao
 public interface ProfileDao {
+    //ID -> 프로필
+    @Query("SELECT * FROM profile WHERE pid IS :pid")
+    Profile get(Integer pid);
+
+    // 그룹의 id를 가지는 프로필 목록을 가져 온다
+    @Query("SELECT * FROM profile WHERE bid IS :bid")
+    List<Profile> gets(Integer bid);
+
     //모든 프로필을 리턴한다.
     @Query("SELECT * FROM profile")
     List<Profile> getAll();
-
-    //여러개의 ID -> 특정 프로필 목록       //그룹으로 바꿔야 할 듯
-    @Query("SELECT * FROM profile WHERE pid IN (:pids)")
-    List<Profile> getByIds(Integer[] pids);
-
-    //ID -> 프로필
-    @Query("SELECT * FROM profile WHERE pid IS :pid")
-    Profile getById(Integer pid);
 
     //삽입
     @Insert

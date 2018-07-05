@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jica.instory.R;
 import com.jica.instory.ViewProfileActivity;
@@ -70,7 +69,7 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
             public void onClick(View v) {
                 Context context = v.getContext();
                 Intent intent = new Intent(context, ViewProfileActivity.class);
-                intent.putExtra("id", profile.getId());
+                intent.putExtra("id", profile.getPid());
                 context.startActivity(intent);
             }
         });

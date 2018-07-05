@@ -2,14 +2,12 @@ package com.jica.instory;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -79,7 +77,7 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent.hasExtra("id")) {
             id = intent.getIntExtra("id", -1);
-            Profile profile = profileDao.getById(id);
+            Profile profile = profileDao.get(id);
             //가져온 프로필의 값을 view에 할당
             //여기서 사진도 가져와서 보여주어야 한다.
             ratingBar.setRating(profile.getRating());
@@ -136,7 +134,7 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
         //만약 수정하려고 한다면 삽입대신 업데이트한다.
         if (isEdit) {
             //업데이트 일때만 id를 사용한다.
-            profile.setId(id);
+            profile.setPid(id);
             profileDao.updateAll(profile);
         } else {
             profileDao.insertAll(profile);

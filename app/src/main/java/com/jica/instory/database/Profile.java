@@ -3,18 +3,21 @@ package com.jica.instory.database;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+import static android.arch.persistence.room.ForeignKey.NO_ACTION;
 
 
-@Entity(foreignKeys = @ForeignKey(entity = Group.class,
-        parentColumns = "gid",
-        childColumns = "gid"))
+@Entity(foreignKeys = @ForeignKey(entity = Band.class,
+        parentColumns = "bid",
+        childColumns = "bid",
+        onDelete = NO_ACTION,
+        onUpdate = CASCADE))
 public class Profile {
     @PrimaryKey(autoGenerate = true)
     private Integer pid;
     //해당 하는 그룹의 ID
-    private Integer gid;
+    private Integer bid;
 
     //레이팅,이름,한줄평
     private int rating;
@@ -37,12 +40,12 @@ public class Profile {
         this.pid = pid;
     }
 
-    public Integer getGid() {
-        return gid;
+    public Integer getBid() {
+        return bid;
     }
 
-    public void setGid(Integer gid) {
-        this.gid = gid;
+    public void setBid(Integer gid) {
+        this.bid = gid;
     }
 
     public int getRating() {
