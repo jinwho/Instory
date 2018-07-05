@@ -16,15 +16,19 @@ import com.jica.instory.database.AppDatabase;
 import com.jica.instory.database.Profile;
 import com.jica.instory.database.ProfileDao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private List<Profile> profileList = new ArrayList<>();
+    //프로필 목록
+    private List<Profile> profileList;
+    //DB접근
     private ProfileDao profileDao;
+    //View
     private RecyclerView rv;
+    //Adapter
     private ProfileRecyclerViewAdapter rvAdapter;
 
+    //오른쪽 상단 메뉴를 생성한다.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -32,11 +36,13 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    //목록 편집 : 프로필 여러개를 선택한다.
+    //그룹 : 그룹관리 화면으로 넘어간다.
+    //설정 : 설정화면으로 넘어간다.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
         switch (item.getItemId()) {
-            case R.id.edit:
+            case R.id.profileedit:
                 return true;
             case R.id.group:
                 return true;
@@ -47,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //프로필을 추가하거나
+    //다른 액티비티에서 돌아왔을 때 목록을 갱신한다.
     @Override
     protected void onStart() {
         super.onStart();
@@ -62,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //handling fab
+        //FloatingActionButton 클릭시 프로필 추가 화면으로 넘어간다.
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,11 +80,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //read DB
+        //DB에 저장 되어있는 프로필 목록을 불러온다.
         profileDao = AppDatabase.getInstance(this).profileDao();
         profileList = profileDao.getAll();
 
-        // send to ProfileRecyclerViewAdapter
+        // 어댑터에서 목록을 처리해서 보여준다.
         rvAdapter = new ProfileRecyclerViewAdapter(profileList);
         rv = findViewById(R.id.profile_list);
         rv.setAdapter(rvAdapter);

@@ -2,10 +2,12 @@
 package com.jica.instory.database;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.Nullable;
 
-@Entity
+/*@Entity(foreignKeys = @ForeignKey(entity = Profile.class,
+        parentColumns = "id",
+        childColumns = "profileID"))*/
 public class Note {
     @PrimaryKey(autoGenerate = true)
     private int id;

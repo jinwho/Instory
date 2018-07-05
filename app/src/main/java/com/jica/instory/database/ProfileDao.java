@@ -5,26 +5,33 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import java.util.List;
 
 @Dao
 public interface ProfileDao {
+    //모든 프로필을 리턴한다.
     @Query("SELECT * FROM profile")
     List<Profile> getAll();
 
-    @Query("SELECT * FROM profile WHERE id IN (:userIds)")
-    List<Profile> getByIds(int[] userIds);
+    //여러개의 ID를 입력받아 프로필 목록을 리턴
+    @Query("SELECT * FROM profile WHERE id IN (:Ids)")
+    List<Profile> getByIds(Integer[] Ids);
 
-    @Query("SELECT * FROM profile WHERE id IS :userId")
-    Profile getByID(int userId);
+    //ID를 입력받아 프로필을 리턴
+    @Query("SELECT * FROM profile WHERE id IS :Id")
+    Profile getById(Integer Id);
 
-    @Query("SELECT * FROM profile WHERE name LIKE :name LIMIT 1")
-    Profile findByName(String name);
-
+    //삽입하기
     @Insert
     void insertAll(Profile... profiles);
 
+    //업데이트
+    @Update
+    void updateAll(Profile... profiles);
+
+    //삭제하기
     @Delete
-    void delete(Profile profile);
+    void deleteAll(Profile... profiles);
 }

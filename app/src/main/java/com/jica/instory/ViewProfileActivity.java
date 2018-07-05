@@ -15,31 +15,38 @@ import com.jica.instory.database.Profile;
 import com.jica.instory.database.ProfileDao;
 
 public class ViewProfileActivity extends AppCompatActivity {
-    private ProfileDao profileDao;
+    //DB객체
+    private ProfileDao profileDao = AppDatabase.getInstance(this).profileDao();
+    //프로필
+    private Profile profile;
+    //프로필 ID
+    private int id;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
 
-        //set up back button
+        //view 가져오기
+        TextView tvName = findViewById(R.id.name);
+        TextView tvComment = findViewById(R.id.comment);
+        RatingBar rating = findViewById(R.id.ratingBar);
+
+        //뒤로가기 버튼 만들기
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
-        TextView tvName = findViewById(R.id.name);
-        TextView tvComment = findViewById(R.id.comment);
-        RatingBar rating = findViewById(R.id.ratingBar);
-
-        // position을 전달받아 해당 id를 가진 프로필을 DB로 검색한 후 뷰를 통해 보여준다.
+        // 보내온 id를 가진 프로필을 뷰를 통해 보여준다.
         Intent intent = getIntent();
-        int i = intent.getIntExtra("position",0);
-        profileDao = AppDatabase.getInstance(this).profileDao();
-        Profile p = profileDao.getByID(i+1);
-
-        tvName.setText(p.getName());
-        tvComment.setText(p.getComment());
-        rating.setRating(p.getRating());
+        id = intent.getIntExtra("id", -1);
+        //DB id 검색
+        profile = profileDao.getById(id);
+        //view 값 할당
+        tvName.setText(profile.getName());
+        tvComment.setText(profile.getComment());
+        rating.setRating(profile.getRating());
 
 
     }
@@ -54,9 +61,11 @@ public class ViewProfileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.edit:
-                return true;
-            case R.id.delete:
+            case R.id.profile_edit:
+                Intent intent = new Intent(this, AddOrEditProfileActivity.class);
+                intent.putExtra("id", id);
+                startActivity(intent);
+                finish();
                 return true;
             case android.R.id.home:
                 finish();
