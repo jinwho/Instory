@@ -5,9 +5,9 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(foreignKeys = @ForeignKey(entity = Profile.class,
+/*@Entity(foreignKeys = @ForeignKey(entity = Profile.class,
         parentColumns = "id",
-        childColumns = "profileID"))
+        childColumns = "profileID"))*/
 public class Note {
     @PrimaryKey(autoGenerate = true)
     private int id;

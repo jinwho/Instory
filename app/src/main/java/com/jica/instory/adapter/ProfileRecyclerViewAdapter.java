@@ -19,8 +19,10 @@ import java.util.List;
 
 public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecyclerViewAdapter.ProfileRecyclerViewHolder> {
 
+    //프로필 목록
     private List<Profile> profileList;
 
+    //View Holder
     class ProfileRecyclerViewHolder extends RecyclerView.ViewHolder {
         public TextView name, comment;
         public RatingBar rating;
@@ -48,6 +50,7 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
     @NonNull
     @Override
     public ProfileRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        //뷰 홀더에 레이아웃을 inflate 시킨다.
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_profile, parent, false);
         return new ProfileRecyclerViewHolder(itemView);
     }
@@ -55,18 +58,19 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
     @Override
     public void onBindViewHolder(@NonNull ProfileRecyclerViewHolder holder, int position) {
         final Profile profile = profileList.get(position);
+
+        //프로필 목록에서 위치에 해당하는 프로필을 읽어와 값을 할당한다.
         holder.name.setText(profile.getName());
         holder.comment.setText(profile.getComment());
         holder.rating.setRating(profile.getRating());
 
+        //해당 item 클릭시 ViewProfileActivity 에 id를 전달하고 넘어간다.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
                 Intent intent = new Intent(context, ViewProfileActivity.class);
-                //probably give error
-                Toast.makeText(context, "profile.getId() : "+profile.getId(), Toast.LENGTH_SHORT).show();
-                //intent.putExtra("id",profile.getId());
+                intent.putExtra("id", profile.getId());
                 context.startActivity(intent);
             }
         });

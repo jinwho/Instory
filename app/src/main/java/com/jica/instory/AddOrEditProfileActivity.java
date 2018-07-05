@@ -1,6 +1,8 @@
 package com.jica.instory;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -17,78 +19,107 @@ import com.jica.instory.database.ProfileDao;
 
 public class AddOrEditProfileActivity extends AppCompatActivity {
 
+    //DB
+    private ProfileDao profileDao = AppDatabase.getInstance(this).profileDao();
+    //사진,레이팅바,이름,한줄평,버튼
     private ImageView profile_pic;
-    private ProfileDao profileDao;
     private RatingBar ratingBar;
     private TextView name, comment;
     private Button button;
-    private int id;
 
-    private static final int CAPTURE_PHOTO_FROM_CAMERA = 1;
-    private static final int SELECT_IMAGE_FROM_GALLERY = 2;
+    // 수정일 경우 ID가 필요하다.
+    // if isEdit = true 수정한다.
+    private int id;
+    private boolean isEdit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addedit_profile);
 
-        //set up back button
+        //뒤로 가기 버튼
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
-        profileDao = AppDatabase.getInstance(getApplicationContext()).profileDao();
-
+        //view 가져오기
         ratingBar = findViewById(R.id.ratingBar);
         name = findViewById(R.id.name);
         comment = findViewById(R.id.comment);
         button = findViewById(R.id.button);
-
         profile_pic = findViewById(R.id.profile_pic);
+
+        //사진공간이 클릭 되었을 때
         profile_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent;
+                //카메라나 갤러리를 호출 한다.
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddOrEditProfileActivity.this);
+                builder.setTitle(R.string.get_photo).setItems(R.array.photo_choice, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            //카메라 인텐트
+                            case 0:
+                            //앨범 인텐트
+                            case 1:
+                        }
+                    }
+                });
+                builder.create().show();
             }
         });
 
-        //만약 extra 데이터가 있으면(수정하기 위해 호출되었다면) 해당 프로필 객체를 불러온다.
+        //수정하기 위해 호출되었다면 extra 데이터가 존재하므로 해당 프로필 객체를 불러온다.
         Intent intent = getIntent();
-        if(intent.hasExtra("id")) {
-            id = intent.getIntExtra("id",-1);
+        if (intent.hasExtra("id")) {
+            id = intent.getIntExtra("id", -1);
             Profile profile = profileDao.getById(id);
+            //가져온 프로필의 값을 view에 할당
             ratingBar.setRating(profile.getRating());
             name.setText(profile.getName());
             comment.setText(profile.getComment());
-
+            //수정하려는 의도이므로 true
+            isEdit = true;
         } else {
-            //do nothing
-
+            isEdit = false;
         }
 
-        //save to db
+        //확인 버튼을 누르면 DB에 저장한다.
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Profile p = new Profile();
+                Profile profile = new Profile();
                 String fName = name.getText().toString();
+                //이름이 비었다면 토스트메세지를 띄운다.
                 if (fName.equals("")) {
                     Toast.makeText(getApplicationContext(), "name field is empty", Toast.LENGTH_SHORT).show();
-                    return;//do not add unless there is name;
+                    return;
                 }
-                p.setRating((int)ratingBar.getRating());
-                p.setName(fName);
-                p.setComment(comment.getText().toString());
+                //view 에서 값을 얻어와 프로필 객체를 생성한다.
 
-                profileDao.insertAll(p);
-                //프로필 id를 얻어서 숫자 폴더안에 profile.jpg로 사진을 저장한다.
+                profile.setRating((int) ratingBar.getRating());
+                profile.setName(fName);
+                profile.setComment(comment.getText().toString());
+
+                //만약 수정하려고 한다면 삽입대신 업데이트한다.
+                if (isEdit) {
+                    //업데이트 일때만 id를 사용한다.
+                    profile.setId(id);
+                    profileDao.updateAll(profile);
+                } else {
+                    profileDao.insertAll(profile);
+                }
+                //프로필 id를 얻어서 숫자 폴더안에 profile.jpg 사진을 저장한다.
                 //사진이 없다면 그대로 냅둔다.
                 finish();
             }
         });
     }
 
+    //메뉴 : 뒤로가기 클릭하면 액티비티 종료함
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -105,4 +136,6 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         //사진을 가져오면 프로필 사진에 사진을 보여준다.
     }
+
+
 }

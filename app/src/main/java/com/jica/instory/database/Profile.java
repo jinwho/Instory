@@ -10,18 +10,20 @@ import android.support.annotation.Nullable;
 public class Profile {
     @PrimaryKey(autoGenerate = true)
     private Integer id;
-    //private int groupID;
+    //private Integer groupID;
 
+    //레이팅,이름,한줄평
     private int rating;
     private String name;
     private String comment;
 
-    //test comment
+    //번호,이메일,주소,생일
     private String phone;
     private String email;
     private String address;
     private String birthday;
 
+    //getters, setters
     public Integer getId() {
         return id;
     }

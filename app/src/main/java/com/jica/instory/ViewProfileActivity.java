@@ -17,8 +17,11 @@ import com.jica.instory.database.Profile;
 import com.jica.instory.database.ProfileDao;
 
 public class ViewProfileActivity extends AppCompatActivity {
+    //DB객체
     private ProfileDao profileDao = AppDatabase.getInstance(this).profileDao();
+    //프로필
     private Profile profile;
+    //프로필 ID
     private int id;
 
     @Override
@@ -26,21 +29,23 @@ public class ViewProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
 
+        //view 가져오기
         TextView tvName = findViewById(R.id.name);
         TextView tvComment = findViewById(R.id.comment);
         RatingBar rating = findViewById(R.id.ratingBar);
 
-        //set up back button
+        //뒤로가기 버튼 만들기
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
-        // position을 전달받아 해당 id를 가진 프로필을 DB로 검색한 후 뷰를 통해 보여준다.
+        // 보내온 id를 가진 프로필을 뷰를 통해 보여준다.
         Intent intent = getIntent();
         id = intent.getIntExtra("id", -1);
+        //DB id 검색
         profile = profileDao.getById(id);
-
+        //view 값 할당
         tvName.setText(profile.getName());
         tvComment.setText(profile.getComment());
         rating.setRating(profile.getRating());
@@ -58,7 +63,7 @@ public class ViewProfileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.modify:
+            case R.id.listedit:
                 Intent intent = new Intent(this, AddOrEditProfileActivity.class);
                 intent.putExtra("id", id);
                 startActivity(intent);
@@ -77,7 +82,7 @@ public class ViewProfileActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 //do nothing
                             }
-                        });
+                        }).create().show();
                 return true;
             case android.R.id.home:
                 finish();
