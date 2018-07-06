@@ -9,6 +9,7 @@ import android.content.Context;
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;
+    private static final String DB_NAME = "AppDB.db";
 
     public abstract BandDao bandDao();
     public abstract ProfileDao profileDao();
@@ -16,10 +17,13 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public static AppDatabase getInstance(Context context){
         if(INSTANCE == null){
-            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "instory.db")
-                    .allowMainThreadQueries()
-                    .build();
+            INSTANCE = create(context);
         }
         return INSTANCE;
+    }
+
+    private static AppDatabase create(final Context context) {
+        // shouldn't use .allowMainThreadQueries()
+        return Room.databaseBuilder(context,AppDatabase.class,DB_NAME).allowMainThreadQueries().build();
     }
 }

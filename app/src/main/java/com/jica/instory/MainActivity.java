@@ -13,19 +13,16 @@ import android.view.View;
 
 import com.jica.instory.adapter.ProfileRecyclerViewAdapter;
 import com.jica.instory.database.AppDatabase;
-import com.jica.instory.database.Profile;
 import com.jica.instory.database.ProfileDao;
+import com.jica.instory.database.ProfileMinimal;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    //프로필 목록
-    private List<Profile> profileList;
-    //DB접근
+
+    private List<ProfileMinimal> profiles;
     private ProfileDao profileDao;
-    //View
     private RecyclerView rv;
-    //Adapter
     private ProfileRecyclerViewAdapter rvAdapter;
 
     //오른쪽 상단 메뉴를 생성한다.
@@ -60,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         //refresh recycler view
-        profileList = profileDao.getAll();
-        rvAdapter.setProfileList(profileList);
+        profiles = profileDao.getAllMinimal();
+        rvAdapter.setProfiles(profiles);
         rvAdapter.notifyDataSetChanged();
     }
 
@@ -80,14 +77,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //DB에 저장 되어있는 프로필 목록을 불러온다.
+        //DB에 저장 되어있는 프로필 목록을 불러와 어댑터 에서 처리한다.
         profileDao = AppDatabase.getInstance(this).profileDao();
-        profileList = profileDao.getAll();
-
-        // 어댑터에서 목록을 처리해서 보여준다.
-        rvAdapter = new ProfileRecyclerViewAdapter(profileList);
+        profiles = profileDao.getAllMinimal();
+        rvAdapter = new ProfileRecyclerViewAdapter(profiles);
         rv = findViewById(R.id.profile_list);
-        rv.setAdapter(rvAdapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
+        rv.setAdapter(rvAdapter);
     }
+
 }

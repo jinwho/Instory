@@ -12,14 +12,14 @@ import android.widget.TextView;
 
 import com.jica.instory.R;
 import com.jica.instory.ViewProfileActivity;
-import com.jica.instory.database.Profile;
+import com.jica.instory.database.ProfileMinimal;
 
 import java.util.List;
 
 public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecyclerViewAdapter.ProfileRecyclerViewHolder> {
 
     //프로필 목록
-    private List<Profile> profileList;
+    private List<ProfileMinimal> profiles;
 
     //View Holder
     class ProfileRecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -34,16 +34,15 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
         }
     }
 
-    public ProfileRecyclerViewAdapter(List<Profile> profileList) {
-        this.profileList = profileList;
+    public ProfileRecyclerViewAdapter(List<ProfileMinimal> profileMinialList) {
+        this.profiles = profileMinialList;
     }
 
-    public List<Profile> getProfileList() {
-        return profileList;
+    public List<ProfileMinimal> getProfiles() {
+        return profiles;
     }
-
-    public void setProfileList(List<Profile> profileList) {
-        this.profileList = profileList;
+    public void setProfiles(List<ProfileMinimal> profiles) {
+        this.profiles = profiles;
     }
 
     @NonNull
@@ -56,7 +55,7 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
 
     @Override
     public void onBindViewHolder(@NonNull ProfileRecyclerViewHolder holder, int position) {
-        final Profile profile = profileList.get(position);
+        final ProfileMinimal profile = profiles.get(position);
 
         //프로필 목록에서 위치에 해당하는 프로필을 읽어와 값을 할당한다.
         holder.name.setText(profile.getName());
@@ -77,7 +76,7 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
 
     @Override
     public int getItemCount() {
-        return profileList.size();
+        return profiles.size();
     }
 
 

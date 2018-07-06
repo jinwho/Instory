@@ -8,11 +8,7 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 import static android.arch.persistence.room.ForeignKey.NO_ACTION;
 
 
-@Entity(foreignKeys = @ForeignKey(entity = Band.class,
-        parentColumns = "bid",
-        childColumns = "bid",
-        onDelete = NO_ACTION,
-        onUpdate = CASCADE))
+@Entity(foreignKeys = @ForeignKey(entity = Band.class,parentColumns = "bid",childColumns = "bid",onDelete = NO_ACTION,onUpdate = CASCADE))
 public class Profile {
     @PrimaryKey(autoGenerate = true)
     private Integer pid;

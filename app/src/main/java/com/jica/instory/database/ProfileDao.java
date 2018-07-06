@@ -2,15 +2,12 @@ package com.jica.instory.database;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
-import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Update;
 
 import java.util.List;
 
 @Dao
-public interface ProfileDao {
+public interface ProfileDao extends BaseDao<Profile>{
     //ID -> 프로필
     @Query("SELECT * FROM profile WHERE pid IS :pid")
     Profile get(Integer pid);
@@ -19,19 +16,12 @@ public interface ProfileDao {
     @Query("SELECT * FROM profile WHERE bid IS :bid")
     List<Profile> gets(Integer bid);
 
-    //모든 프로필을 리턴한다.
+    //모든 프로필
     @Query("SELECT * FROM profile")
     List<Profile> getAll();
 
-    //삽입
-    @Insert
-    void insertAll(Profile... profiles);
+    // 최소한의 프로필 정보만을 리턴
+    @Query("SELECT pid, rating, name, comment FROM profile")
+    List<ProfileMinimal> getAllMinimal();
 
-    //업데이트
-    @Update
-    void updateAll(Profile... profiles);
-
-    //삭제
-    @Delete
-    void deleteAll(Profile... profiles);
 }
