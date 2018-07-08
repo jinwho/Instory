@@ -1,5 +1,6 @@
 package com.jica.instory.database;
 
+import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
@@ -17,12 +18,12 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public static AppDatabase getInstance(Context context){
         if(INSTANCE == null){
-            INSTANCE = create(context);
+            INSTANCE = buildDatabase(context);
         }
         return INSTANCE;
     }
 
-    private static AppDatabase create(final Context context) {
+    private static AppDatabase buildDatabase(final Context context) {
         // shouldn't use .allowMainThreadQueries()
         return Room.databaseBuilder(context,AppDatabase.class,DB_NAME).allowMainThreadQueries().build();
     }
