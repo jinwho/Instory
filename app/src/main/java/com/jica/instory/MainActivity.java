@@ -1,7 +1,9 @@
 package com.jica.instory;
 
-import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import com.jica.instory.adapter.ProfileRecyclerViewAdapter;
 import com.jica.instory.database.AppDatabase;
 import com.jica.instory.database.ProfileDao;
 import com.jica.instory.database.ProfileMinimal;
+import com.jica.instory.viewmodel.ProfileViewModel;
 
 import java.util.List;
 
@@ -30,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Lifecycle ll = getLifecycle();
         //FloatingActionButton 클릭시 프로필 추가 화면으로 넘어간다.
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -50,16 +52,27 @@ public class MainActivity extends AppCompatActivity {
         rv.setAdapter(rvAdapter);
     }
 
-    //오른쪽 상단 메뉴를 생성한다.
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        //목록을 갱신한다.
+        profiles = profileDao.getAllMinimal();
+        rvAdapter.setProfiles(profiles);
+        rvAdapter.notifyDataSetChanged();
+
+    }
+
+    //오른쪽 상단 메뉴를 생성한다.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         return true;
     }
-    //목록 편집 : 프로필 여러개를 선택한다.
 
+    //목록 편집 : 프로필 여러개를 선택한다.
     //그룹 : 그룹관리 화면으로 넘어간다.
     //설정 : 설정화면으로 넘어간다.
     @Override
@@ -75,17 +88,4 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-    //프로필을 추가하거나
-
-    //다른 액티비티에서 돌아왔을 때 목록을 갱신한다.
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        //refresh recycler view
-        profiles = profileDao.getAllMinimal();
-        rvAdapter.setProfiles(profiles);
-        rvAdapter.notifyDataSetChanged();
-    }
-
 }

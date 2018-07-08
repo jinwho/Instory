@@ -7,14 +7,11 @@ import com.jica.instory.database.ProfileMinimal;
 
 import java.util.List;
 
-public class MainActivityViewModel extends ViewModel {
+public class ProfileViewModel extends ViewModel {
     private LiveData<List<ProfileMinimal>> profiles;
 
 
     public LiveData<List<ProfileMinimal>> getProfiles() {
-        if (profiles == null) {
-            //profiles
-        }
         return profiles;
     }
 }
