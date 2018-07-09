@@ -11,8 +11,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.jica.instory.database.AppDatabase;
-import com.jica.instory.database.Profile;
-import com.jica.instory.database.ProfileDao;
+import com.jica.instory.database.entity.Profile;
+import com.jica.instory.database.dao.ProfileDao;
 
 public class ViewProfileActivity extends AppCompatActivity {
     //DB객체
@@ -67,6 +67,8 @@ public class ViewProfileActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return true;
+            case R.id.profile_delete:
+                profileDao.deleteAll(profile);
             case android.R.id.home:
                 finish();
                 return true;

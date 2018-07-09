@@ -1,10 +1,16 @@
 package com.jica.instory.database;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
+
+import com.jica.instory.database.dao.BandDao;
+import com.jica.instory.database.dao.NoteDao;
+import com.jica.instory.database.dao.ProfileDao;
+import com.jica.instory.database.entity.Band;
+import com.jica.instory.database.entity.Note;
+import com.jica.instory.database.entity.Profile;
 
 @Database(entities = {Band.class,Profile.class,Note.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {

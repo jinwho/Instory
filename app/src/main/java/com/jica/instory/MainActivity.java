@@ -1,9 +1,6 @@
 package com.jica.instory;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,9 +13,8 @@ import android.view.View;
 
 import com.jica.instory.adapter.ProfileRecyclerViewAdapter;
 import com.jica.instory.database.AppDatabase;
-import com.jica.instory.database.ProfileDao;
-import com.jica.instory.database.ProfileMinimal;
-import com.jica.instory.viewmodel.ProfileViewModel;
+import com.jica.instory.database.dao.ProfileDao;
+import com.jica.instory.database.entity.ProfileMinimal;
 
 import java.util.List;
 
@@ -33,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        rv = findViewById(R.id.profile_list);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+
         //FloatingActionButton 클릭시 프로필 추가 화면으로 넘어간다.
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -46,12 +45,11 @@ public class MainActivity extends AppCompatActivity {
         //DB에 저장 되어있는 프로필 목록을 불러와 어댑터 에서 처리한다.
         profileDao = AppDatabase.getInstance(this).profileDao();
         profiles = profileDao.getAllMinimal();
+
         rvAdapter = new ProfileRecyclerViewAdapter(profiles);
-        rv = findViewById(R.id.profile_list);
-        rv.setLayoutManager(new LinearLayoutManager(this));
+
         rv.setAdapter(rvAdapter);
     }
-
 
     @Override
     protected void onStart() {

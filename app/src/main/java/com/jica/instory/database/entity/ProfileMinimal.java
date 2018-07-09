@@ -1,4 +1,4 @@
-package com.jica.instory.database;
+package com.jica.instory.database.entity;
 
 public class ProfileMinimal {
 

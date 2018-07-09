@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Instory</string>
+    <string name="app_name">마이피플</string>
     <string name="profile_name">이름</string>
     <string name="profile_comment">한줄평</string>
     <string name="profile_photo">사진</string>
@@ -17,4 +17,5 @@
     <string name="profile_birthday">생일</string>
     <string name="delete_message">프로필을 삭제하시겠습니까?</string>
     <string name="get_photo">사진을 가져올 방법을 선택하세요.</string>
+    <string name="delete">삭제</string>
 </resources>

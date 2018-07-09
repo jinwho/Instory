@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.jica.instory.R;
 import com.jica.instory.ViewProfileActivity;
-import com.jica.instory.database.ProfileMinimal;
+import com.jica.instory.database.entity.ProfileMinimal;
 
 import java.util.List;
 

@@ -1,17 +1,18 @@
 package com.jica.instory.viewmodel;
 
-import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.jica.instory.database.ProfileMinimal;
+import com.jica.instory.database.entity.ProfileMinimal;
 
 import java.util.List;
 
 public class ProfileViewModel extends ViewModel {
-    private LiveData<List<ProfileMinimal>> profiles;
+    private MutableLiveData<List<ProfileMinimal>> profiles = new MutableLiveData<>();
 
-
-    public LiveData<List<ProfileMinimal>> getProfiles() {
+    public ProfileViewModel(){
+    }
+    public MutableLiveData<List<ProfileMinimal>> getProfiles() {
         return profiles;
     }
 }
