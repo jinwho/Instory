@@ -66,3 +66,7 @@ dependencies {
     //implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
 
 }
+
+dependencies {
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+}

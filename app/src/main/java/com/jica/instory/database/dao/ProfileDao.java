@@ -17,7 +17,7 @@ public interface ProfileDao{
     @Query("SELECT * FROM profile WHERE pid IS :pid")
     Profile get(Integer pid);
 
-    // 그룹의 id를 가지는 프로필 목록을 가져 온다
+    // 그룹에 포함되는 프로필 목록
     @Query("SELECT * FROM profile WHERE bid IS :bid")
     List<Profile> gets(Integer bid);
 
@@ -25,21 +25,21 @@ public interface ProfileDao{
     @Query("SELECT * FROM profile")
     List<Profile> getAll();
 
-    // 최소한의 프로필 정보만을 리턴
+    // 최소한의 프로필 정보
     // id, 레이팅, 이름, 한줄평
     @Query("SELECT pid, rating, name, comment FROM profile")
     List<ProfileMinimal> getAllMinimal();
 
     //삽입
     @Insert
-    void insertAll(Profile... data);
+    long insert(Profile data);
 
     //업데이트
     @Update
-    void updateAll(Profile... data);
+    void update(Profile data);
 
     //삭제
     @Delete
-    void deleteAll(Profile... data);
+    void delete(Profile data);
 
 }

@@ -1,6 +1,7 @@
 package com.jica.instory;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.jica.instory.adapter.ProfileRecyclerViewAdapter;
+import com.jica.instory.adapter.ProfileAdapter;
 import com.jica.instory.database.AppDatabase;
 import com.jica.instory.database.dao.ProfileDao;
 import com.jica.instory.database.entity.ProfileMinimal;
@@ -19,35 +20,26 @@ import com.jica.instory.database.entity.ProfileMinimal;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private List<ProfileMinimal> profiles;
-
     private ProfileDao profileDao;
-    private RecyclerView rv;
-    private ProfileRecyclerViewAdapter rvAdapter;
+    private ProfileAdapter rvAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        rv = findViewById(R.id.profile_list);
+        RecyclerView rv = findViewById(R.id.profile_list);
         rv.setLayoutManager(new LinearLayoutManager(this));
 
         //FloatingActionButton 클릭시 프로필 추가 화면으로 넘어간다.
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), AddOrEditProfileActivity.class);
-                startActivity(intent);
-            }
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), AddOrEditProfileActivity.class);
+            startActivity(intent);
         });
 
         //DB에 저장 되어있는 프로필 목록을 불러와 어댑터 에서 처리한다.
         profileDao = AppDatabase.getInstance(this).profileDao();
-        profiles = profileDao.getAllMinimal();
-
-        rvAdapter = new ProfileRecyclerViewAdapter(profiles);
-
+        rvAdapter = new ProfileAdapter(this);
         rv.setAdapter(rvAdapter);
     }
 
@@ -55,11 +47,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        //목록을 갱신한다.
-        profiles = profileDao.getAllMinimal();
-        rvAdapter.setProfiles(profiles);
-        rvAdapter.notifyDataSetChanged();
-
+        //프로필 목록을 얻어서 adapter 에 보낸다.
+        rvAdapter.setProfiles(profileDao.getAllMinimal());
     }
 
     //오른쪽 상단 메뉴를 생성한다.
@@ -70,15 +59,14 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    //목록 편집 : 프로필 여러개를 선택한다.
     //그룹 : 그룹관리 화면으로 넘어간다.
     //설정 : 설정화면으로 넘어간다.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.list_edit:
-                return true;
             case R.id.group:
+                Intent intent = new Intent(this, GroupActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.setting:
                 return true;

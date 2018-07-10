@@ -1,12 +1,16 @@
 package com.jica.instory;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -14,13 +18,14 @@ import com.jica.instory.database.AppDatabase;
 import com.jica.instory.database.entity.Profile;
 import com.jica.instory.database.dao.ProfileDao;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
 public class ViewProfileActivity extends AppCompatActivity {
     //DB객체
     private ProfileDao profileDao = AppDatabase.getInstance(this).profileDao();
     //프로필
     private Profile profile;
-    //프로필 ID
-    private int id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,6 +36,7 @@ public class ViewProfileActivity extends AppCompatActivity {
         TextView tvName = findViewById(R.id.name);
         TextView tvComment = findViewById(R.id.comment);
         RatingBar rating = findViewById(R.id.ratingBar);
+        ImageView profile_pic = findViewById(R.id.profile_pic);
 
         //뒤로가기 버튼 만들기
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
@@ -40,7 +46,7 @@ public class ViewProfileActivity extends AppCompatActivity {
 
         // 보내온 id를 가진 프로필을 뷰를 통해 보여준다.
         Intent intent = getIntent();
-        id = intent.getIntExtra("id", -1);
+        Integer id = intent.getIntExtra("id", -1);
         //DB id 검색
         profile = profileDao.get(id);
         //view 값 할당
@@ -48,7 +54,16 @@ public class ViewProfileActivity extends AppCompatActivity {
         tvComment.setText(profile.getComment());
         rating.setRating(profile.getRating());
 
-
+        //check if it has profile photo
+        String filename = String.valueOf(profile.getPid());
+        FileInputStream inputStream;
+        try {
+            inputStream = openFileInput(filename);
+            profile_pic.setImageBitmap(BitmapFactory.decodeStream(inputStream));
+            inputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -63,12 +78,12 @@ public class ViewProfileActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.profile_edit:
                 Intent intent = new Intent(this, AddOrEditProfileActivity.class);
-                intent.putExtra("id", id);
+                intent.putExtra("id", profile.getPid());
                 startActivity(intent);
                 finish();
                 return true;
             case R.id.profile_delete:
-                profileDao.deleteAll(profile);
+                profileDao.delete(profile);
             case android.R.id.home:
                 finish();
                 return true;

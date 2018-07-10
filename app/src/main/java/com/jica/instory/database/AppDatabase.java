@@ -19,8 +19,8 @@ public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "AppDB.db";
 
     public abstract BandDao bandDao();
-    public abstract ProfileDao profileDao();
     public abstract NoteDao noteDao();
+    public abstract ProfileDao profileDao();
 
     public static AppDatabase getInstance(Context context){
         if(INSTANCE == null){

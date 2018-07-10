@@ -18,4 +18,6 @@
     <string name="delete_message">프로필을 삭제하시겠습니까?</string>
     <string name="get_photo">사진을 가져올 방법을 선택하세요.</string>
     <string name="delete">삭제</string>
+    <string name="group_name">그룹명</string>
+    <string name="add_group">그룹추가</string>
 </resources>
