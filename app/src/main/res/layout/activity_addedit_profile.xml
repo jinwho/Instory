@@ -214,7 +214,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/sub_day" />
 
-            <EditText
+            <TextView
                 android:id="@+id/birthday"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

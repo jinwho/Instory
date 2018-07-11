@@ -1,10 +1,13 @@
 package com.jica.instory;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +26,9 @@ import com.jica.instory.database.dao.ProfileDao;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +52,7 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
     @BindView(R.id.comment) EditText comment;
     @BindView(R.id.phone) EditText  phone;
     @BindView(R.id.email) EditText email;
-    @BindView(R.id.birthday) EditText birthday;
+    @BindView(R.id.birthday) TextView birthday;
     @BindView(R.id.address) EditText address;
 
     //buttons
@@ -60,8 +66,6 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_addedit_profile);
         profileDao = AppDatabase.getInstance(this).profileDao();
         ButterKnife.bind(this);
-
-        DatePicker datePicker;
 
         //수정하기 위해 호출되었다면 id를 얻어 프로필 객체를 불러온다.
         Intent intent = getIntent();
@@ -180,4 +184,5 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
                 return;
         }
     }
+
 }
