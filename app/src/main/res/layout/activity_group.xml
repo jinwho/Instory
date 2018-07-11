@@ -9,22 +9,21 @@
         android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/add_group"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/row_group">
 
     </android.support.v7.widget.RecyclerView>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:clickable="true"
-        android:tint="@android:color/background_light"
-        app:backgroundTint="@android:color/black"
+    <Button
+        android:id="@+id/add_group"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/sub_btm"
+        android:text="@string/add_group"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

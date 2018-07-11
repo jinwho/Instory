@@ -6,11 +6,43 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <ImageView
+            android:id="@+id/toolbar_logo"
+            android:layout_width="70dp"
+            android:layout_height="26dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/main_logo"
+            tools:layout_editor_absoluteX="87dp"
+            tools:layout_editor_absoluteY="15dp" />
+
+        <ImageView
+            android:id="@+id/menu_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="end"
+            android:clickable="true"
+            app:srcCompat="@drawable/main_menu"
+            tools:layout_editor_absoluteX="320dp"
+            tools:layout_editor_absoluteY="4dp" />
+
+    </android.support.v7.widget.Toolbar>
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/profile_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
         android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         tools:listitem="@layout/row_profile">
 
     </android.support.v7.widget.RecyclerView>

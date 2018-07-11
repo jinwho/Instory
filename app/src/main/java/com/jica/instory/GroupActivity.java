@@ -33,19 +33,6 @@ public class GroupActivity extends AppCompatActivity {
         rv = findViewById(R.id.rv);
         rv.setLayoutManager(new LinearLayoutManager(this));
 
-        //뒤로가기 버튼
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-
-        //FloatingActionButton 클릭시 프로필 추가 화면으로 넘어간다.
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), AddOrEditProfileActivity.class);
-            startActivity(intent);
-        });
-
         //get db
         List<Band> bands = bandDao.getAll();
         ba = new BandAdapter(this);

@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -22,6 +24,9 @@ import com.jica.instory.database.dao.ProfileDao;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class AddOrEditProfileActivity extends AppCompatActivity {
     //DB
     private ProfileDao profileDao;
@@ -31,47 +36,58 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 0;
     static final int SELECT_IMAGE_GALLERY = 1;
 
-    //사진,레이팅바,이름,한줄평,버튼
-    private ImageView profile_pic;
+    //사진 데이터
     private Bitmap profile_photo = null;
-    private RatingBar ratingBar;
-    private TextView name, comment;
 
-    private long insertedID;
+    //views
+    @BindView(R.id.profile_pic)  ImageView profile_pic;
+    @BindView(R.id.ratingBar) RatingBar ratingBar;
+    @BindView(R.id.name) EditText name;
+    @BindView(R.id.comment) EditText comment;
+    @BindView(R.id.phone) EditText  phone;
+    @BindView(R.id.email) EditText email;
+    @BindView(R.id.birthday) EditText birthday;
+    @BindView(R.id.address) EditText address;
+
+    //buttons
+    @BindView(R.id.back) ImageView back;
+    @BindView(R.id.save) ImageView save;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addedit_profile);
         profileDao = AppDatabase.getInstance(this).profileDao();
+        ButterKnife.bind(this);
 
-        //뒤로 가기 버튼
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        DatePicker datePicker;
 
-        //actionBar.setDisplayUseLogoEnabled(true);
-        //actionBar.setDisplayShowHomeEnabled(true);
-
-        //view 가져오기
-        ratingBar = findViewById(R.id.ratingBar);
-        name = findViewById(R.id.name);
-        comment = findViewById(R.id.comment);
-        profile_pic = findViewById(R.id.profile_pic);
-
-        //수정하기 위해 호출되었다면 extra 데이터가 존재하므로 해당 프로필 객체를 불러온다.
+        //수정하기 위해 호출되었다면 id를 얻어 프로필 객체를 불러온다.
         Intent intent = getIntent();
         if (intent.hasExtra("id")) {
             Integer id = intent.getIntExtra("id", -1);
-            //check if id has profile pic
             profile = profileDao.get(id);
+            //set view
             ratingBar.setRating(profile.getRating());
             name.setText(profile.getName());
             comment.setText(profile.getComment());
+            phone.setText(profile.getPhone());
+            email.setText(profile.getEmail());
+            birthday.setText(profile.getBirthday());
+            address.setText(profile.getAddress());
         } else {
             profile = new Profile();
         }
+
+        //back button
+        back.setOnClickListener(v -> {
+            finish();
+        });
+        //save button
+        save.setOnClickListener(v -> {
+            SaveProfile();
+        });
     }
 
     //저장 버튼 클릭
@@ -80,14 +96,19 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
         profile.setRating((int) ratingBar.getRating());
         profile.setName(name.getText().toString());
         profile.setComment(comment.getText().toString());
+        profile.setPhone(phone.getText().toString());
+        profile.setEmail(email.getText().toString());
+        profile.setBirthday(birthday.getText().toString());
+        profile.setAddress(address.getText().toString());
 
         //pid는 수정시에만 존재한다(왜냐면 autoGenerate 때문에)
+        long insertedID;
         if (profile.getPid() != null) {
-            //프로필이 존재하면 업데이트
+            //업데이트
             profileDao.update(profile);
             insertedID = profile.getPid();
         } else {
-            //아니라면 추가
+            //추가
             insertedID = profileDao.insert(profile);
         }
 
@@ -105,26 +126,6 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
 
         }
         finish();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.profile_addedit_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.menu_save:
-                SaveProfile();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     //사진공간이 클릭 되었을 때
@@ -148,6 +149,7 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
         builder.create().show();
     }
 
+    //사진을 가져왔을 때
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

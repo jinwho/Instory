@@ -10,9 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jica.instory.database.AppDatabase;
 import com.jica.instory.database.entity.Profile;
@@ -21,74 +24,69 @@ import com.jica.instory.database.dao.ProfileDao;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
-public class ViewProfileActivity extends AppCompatActivity {
-    //DB객체
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class ViewProfileActivity extends AppCompatActivity{
+    //DB
     private ProfileDao profileDao = AppDatabase.getInstance(this).profileDao();
-    //프로필
     private Profile profile;
+    private Intent intent;
+
+    //views
+    @BindView(R.id.name) TextView name;
+    @BindView(R.id.comment) TextView comment;
+    @BindView(R.id.ratingBar) RatingBar ratingBar;
+    @BindView(R.id.profile_pic) ImageView profile_pic;
+
+    //icons
+    @BindView(R.id.phone_img) ImageView phone;
+    @BindView(R.id.email_img) ImageView email;
+    @BindView(R.id.birthday_img) ImageView birthday;
+    @BindView(R.id.address_img) ImageView address;
+
+    //buttons
+    @BindView(R.id.back) ImageView back;
+    @BindView(R.id.del) ImageView del;
+    @BindView(R.id.edit) ImageView edit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
+        ButterKnife.bind(this);
 
-        //view 가져오기
-        TextView tvName = findViewById(R.id.name);
-        TextView tvComment = findViewById(R.id.comment);
-        RatingBar rating = findViewById(R.id.ratingBar);
-        ImageView profile_pic = findViewById(R.id.profile_pic);
-
-        //뒤로가기 버튼 만들기
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-
-        // 보내온 id를 가진 프로필을 뷰를 통해 보여준다.
-        Intent intent = getIntent();
+        intent = getIntent();
         Integer id = intent.getIntExtra("id", -1);
-        //DB id 검색
+        //DB 검색
         profile = profileDao.get(id);
         //view 값 할당
-        tvName.setText(profile.getName());
-        tvComment.setText(profile.getComment());
-        rating.setRating(profile.getRating());
+        ratingBar.setRating(profile.getRating());
+        name.setText(profile.getName());
+        comment.setText(profile.getComment());
 
-        //check if it has profile photo
-        String filename = String.valueOf(profile.getPid());
-        FileInputStream inputStream;
-        try {
-            inputStream = openFileInput(filename);
-            profile_pic.setImageBitmap(BitmapFactory.decodeStream(inputStream));
-            inputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+        // if data exist than make it clickable otherwise make it grey //
+        /*
+        phone.setText(profile.getPhone());
+        email.setText(profile.getEmail());
+        birthday.setText(profile.getBirthday());
+        address.setText(profile.getAddress());
+        */
+        phone.setOnClickListener(v -> Toast.makeText(ViewProfileActivity.this, profile.getPhone(), Toast.LENGTH_SHORT).show());
+        email.setOnClickListener(v -> Toast.makeText(ViewProfileActivity.this, profile.getEmail(), Toast.LENGTH_SHORT).show());
+        birthday.setOnClickListener(v -> Toast.makeText(ViewProfileActivity.this, profile.getBirthday(), Toast.LENGTH_SHORT).show());
+        address.setOnClickListener(v -> Toast.makeText(ViewProfileActivity.this, profile.getAddress(), Toast.LENGTH_SHORT).show());
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.profile_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.profile_edit:
-                Intent intent = new Intent(this, AddOrEditProfileActivity.class);
-                intent.putExtra("id", profile.getPid());
-                startActivity(intent);
-                finish();
-                return true;
-            case R.id.profile_delete:
-                profileDao.delete(profile);
-            case android.R.id.home:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        back.setOnClickListener(v -> finish());
+        del.setOnClickListener(v -> {
+            profileDao.delete(profile);
+            finish();
+        });
+        edit.setOnClickListener(v -> {
+            intent = new Intent(this, AddOrEditProfileActivity.class);
+            intent.putExtra("id", profile.getPid());
+            startActivity(intent);
+            finish();
+        });
     }
 }
