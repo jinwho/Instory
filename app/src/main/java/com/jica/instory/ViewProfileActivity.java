@@ -18,11 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jica.instory.database.AppDatabase;
+import com.jica.instory.database.dao.NoteDao;
+import com.jica.instory.database.entity.Note;
 import com.jica.instory.database.entity.Profile;
 import com.jica.instory.database.dao.ProfileDao;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +34,8 @@ public class ViewProfileActivity extends AppCompatActivity{
     //DB
     private ProfileDao profileDao = AppDatabase.getInstance(this).profileDao();
     private Profile profile;
+    private NoteDao noteDao = AppDatabase.getInstance(this).noteDao();
+    private List<Note> notes;
     private Intent intent;
 
     //views
@@ -49,6 +54,7 @@ public class ViewProfileActivity extends AppCompatActivity{
     @BindView(R.id.back) ImageView back;
     @BindView(R.id.del) ImageView del;
     @BindView(R.id.edit) ImageView edit;
+    @BindView(R.id.add_note) ImageView add_note;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,6 +83,8 @@ public class ViewProfileActivity extends AppCompatActivity{
         birthday.setOnClickListener(v -> Toast.makeText(ViewProfileActivity.this, profile.getBirthday(), Toast.LENGTH_SHORT).show());
         address.setOnClickListener(v -> Toast.makeText(ViewProfileActivity.this, profile.getAddress(), Toast.LENGTH_SHORT).show());
 
+
+        //buttons
         back.setOnClickListener(v -> finish());
         del.setOnClickListener(v -> {
             profileDao.delete(profile);
@@ -87,6 +95,13 @@ public class ViewProfileActivity extends AppCompatActivity{
             intent.putExtra("id", profile.getPid());
             startActivity(intent);
             finish();
+        });
+        add_note.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //노틑 추가 화면을 불러온다.
+                //제목과 내용값을 얻어온다.
+            }
         });
     }
 }

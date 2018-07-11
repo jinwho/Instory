@@ -24,21 +24,11 @@
             tools:layout_editor_absoluteY="15dp" />
 
         <ImageView
-            android:id="@+id/toolbar_logo"
-            android:layout_width="70dp"
-            android:layout_height="26dp"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/main_logo"
-            tools:layout_editor_absoluteX="87dp"
-            tools:layout_editor_absoluteY="15dp" />
-
-        <ImageView
             android:id="@+id/del"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="end"
             app:srcCompat="@android:drawable/ic_menu_delete" />
-
 
 
     </android.support.v7.widget.Toolbar>
@@ -165,7 +155,6 @@
             app:srcCompat="@drawable/sub_home" />
 
 
-
     </android.support.constraint.ConstraintLayout>
 
 
@@ -173,13 +162,22 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/add_note"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
         tools:listitem="@layout/row_note" />
+
+    <ImageView
+        android:id="@+id/add_note"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="@color/ColorButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/sub_plus" />
 
 
 </android.support.constraint.ConstraintLayout>
