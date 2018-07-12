@@ -38,7 +38,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ViewProfileActivity extends AppCompatActivity {
+import static android.content.DialogInterface.BUTTON_NEGATIVE;
+import static android.content.DialogInterface.BUTTON_POSITIVE;
+
+public class ViewProfileActivity extends AppCompatActivity{
     //DB profile
     private ProfileDao profileDao = AppDatabase.getInstance(this).profileDao();
     private Profile profile;
@@ -105,6 +108,12 @@ public class ViewProfileActivity extends AppCompatActivity {
         recyclerView.setAdapter(noteAdapter);
         noteAdapter.setNotes(notes);
 
+        /*
+        get photo from profile file name
+         */
+
+
+
         // if data exist than make it clickable otherwise make it grey //
         /*
         phone.setText(profile.getPhone());
@@ -121,8 +130,14 @@ public class ViewProfileActivity extends AppCompatActivity {
         //buttons
         back.setOnClickListener(v -> finish());
         del.setOnClickListener(v -> {
-            profileDao.delete(profile);
-            finish();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.delete_message);
+            builder.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> {
+                profileDao.delete(profile);
+                finish();
+            });
+            builder.setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.dismiss());
+            builder.create().show();
         });
         edit.setOnClickListener(v -> {
             intent = new Intent(this, AddOrEditProfileActivity.class);
@@ -136,14 +151,25 @@ public class ViewProfileActivity extends AppCompatActivity {
             Note note = new Note();
             note.setPid(profile.getPid());
 
-            //should get input from this two
-            note.setTitle("test");
-            note.setContent("this is test note");
-
-            noteDao.insert(note);
-            notes.add(note);
-            noteAdapter.notifyItemInserted(noteAdapter.getItemCount());
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("새 메모");
+            // Set up the input
+            final EditText title = new EditText(this);
+            //final EditText contents = new EditText(this);
+            // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+            title.setInputType(InputType.TYPE_CLASS_TEXT);
+            builder.setView(title);
+            //builder.setAdapter()
+            builder.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> {
+                note.setTitle(title.getText().toString());
+                note.setContent("this is test note");
+                dialogInterface.dismiss();
+                noteDao.insert(note);
+                notes.add(note);
+                noteAdapter.notifyItemInserted(noteAdapter.getItemCount());
+            });
+            builder.setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.dismiss());
+            builder.create().show();
         });
     }
-
 }

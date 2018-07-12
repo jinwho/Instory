@@ -1,5 +1,6 @@
 package com.jica.instory;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
@@ -145,16 +146,15 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
         builder.setTitle(R.string.get_photo).setItems(R.array.photo_choice, (dialog, which) -> {
             switch (which) {
                 //카메라
-                case REQUEST_IMAGE_CAPTURE:
+                case 0:
                     Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(takePicture, REQUEST_IMAGE_CAPTURE);
-                    ThumbnailUtils t;//?
+                    AddOrEditProfileActivity.this.startActivityForResult(takePicture, REQUEST_IMAGE_CAPTURE);
                     break;
                 //갤러리
-                case SELECT_FROM_GALLERY:
+                case 1:
                     Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                             MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(pickPhoto, SELECT_FROM_GALLERY);
+                    AddOrEditProfileActivity.this.startActivityForResult(pickPhoto, SELECT_FROM_GALLERY);
                     break;
             }
         });
@@ -175,6 +175,7 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
                 }
                 break;
             case SELECT_FROM_GALLERY:
+                ThumbnailUtils t;//how to get thumbnail of photo?
                 if (resultCode == RESULT_OK) {
                     Uri uri = data.getData();
                     try {
