@@ -1,41 +1,32 @@
 package com.jica.instory;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.jica.instory.adapter.ProfileAdapter;
 import com.jica.instory.database.AppDatabase;
 import com.jica.instory.database.dao.ProfileDao;
-import com.jica.instory.database.entity.ProfileMinimal;
 
-import java.util.List;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
     private ProfileDao profileDao;
-    private ProfileAdapter rvAdapter;
+    private ProfileAdapter profileAdapter;
+    @BindView(R.id.profile_list) RecyclerView recyclerView;
+    @BindView(R.id.menu_button) ImageView menu_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        RecyclerView rv = findViewById(R.id.profile_list);
-        ImageView menu_button = findViewById(R.id.menu_button);
+        ButterKnife.bind(this);
 
         //FloatingActionButton 클릭시 프로필 추가 화면으로
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -52,16 +43,16 @@ public class MainActivity extends AppCompatActivity {
 
         //DB에 저장 되어있는 프로필 목록을 불러와 어댑터 에서 처리한다.
         profileDao = AppDatabase.getInstance(this).profileDao();
-        rvAdapter = new ProfileAdapter(this);
-        rv.setLayoutManager(new LinearLayoutManager(this));
-        rv.setAdapter(rvAdapter);
+        profileAdapter = new ProfileAdapter(this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(profileAdapter);
     }
 
+    //when visible -> update view
     @Override
     protected void onStart() {
         super.onStart();
-
-        //프로필 목록을 얻어서 adapter 에 보낸다.
-        rvAdapter.setProfiles(profileDao.getAllMinimal());
+        //다른 액티비티에서 삭제나 추가가 이루어 지기 때문에 이 방법 말고는없다.
+        profileAdapter.setProfiles(profileDao.getAllMinimal());
     }
 }

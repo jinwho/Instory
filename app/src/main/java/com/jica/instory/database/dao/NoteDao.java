@@ -17,23 +17,19 @@ public interface NoteDao{
     @Query("SELECT * FROM note WHERE nid IS :nid")
     Note get(Integer nid);
 
-    //모든 노트
-    @Query("SELECT * FROM note")
-    List<Note> getAll();
-
-    //특정 프로필 아이디를 가진 모든 노트
+    //특정 프로필이 소유한 노트 목록
     @Query("SELECT * FROM note WHERE pid IS :pid")
     List<Note> ownBy(Integer pid);
 
     //삽입
     @Insert
-    void insertAll(Note... data);
+    void insert(Note data);
 
     //업데이트
     @Update
-    void updateAll(Note... data);
+    void update(Note data);
 
     //삭제
     @Delete
-    void deleteAll(Note... data);
+    void delete(Note data);
 }

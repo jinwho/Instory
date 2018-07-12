@@ -6,9 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jica.instory.R;
+import com.jica.instory.database.AppDatabase;
+import com.jica.instory.database.dao.NoteDao;
 import com.jica.instory.database.entity.Note;
 
 import java.util.List;
@@ -22,7 +25,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     class NoteViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.title)TextView title;
-        @BindView(R.id.content)TextView content;
+        @BindView(R.id.contents)TextView contents;
+        @BindView(R.id.del)ImageView del;
 
         NoteViewHolder(View itemView) {
             super(itemView);
@@ -34,6 +38,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     private List<Note> notes;
     private final LayoutInflater mInflater;
     private Context context;
+    private NoteDao noteDao;
 
     public NoteAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -60,7 +65,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
         //프로필을 view 의 값으로 할당
         holder.title.setText(note.getTitle());
-        holder.content.setText(note.getContent());
+        holder.contents.setText(note.getContent());
+        holder.del.setOnClickListener(v -> {
+            noteDao = AppDatabase.getInstance(context).noteDao();
+            noteDao.delete(notes.get(position));
+            removeAt(position);
+        });
     }
 
     @Override
@@ -70,4 +80,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         else return 0;
     }
 
+    public void removeAt(int position) {
+        notes.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, notes.size());
+    }
 }

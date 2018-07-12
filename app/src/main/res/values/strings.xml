@@ -22,4 +22,6 @@
     <string name="add_group">그룹추가</string>
     <string name="note_title">제목</string>
     <string name="note_content">내용</string>
+    <string name="profile_add">프로필 추가</string>
+    <string name="profile_edit">프로필 수정</string>
 </resources>
