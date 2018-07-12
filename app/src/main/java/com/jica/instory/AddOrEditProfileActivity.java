@@ -1,8 +1,8 @@
 package com.jica.instory;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
@@ -18,8 +18,8 @@ import com.jica.instory.database.AppDatabase;
 import com.jica.instory.database.entity.Profile;
 import com.jica.instory.database.dao.ProfileDao;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,7 +49,7 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
 
     //toolbar buttons
     @BindView(R.id.back) ImageView back;
-    @BindView(R.id.toolbartext) TextView toolbartext;
+    @BindView(R.id.logo_text) TextView logo_text;
     @BindView(R.id.save) ImageView save;
 
 
@@ -73,8 +73,12 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
             birthday.setText(profile.getBirthday());
             address.setText(profile.getAddress());
 
+
+            //if file exist set to profile_pic
+            //profile_pic.setImage( get file from db) profile.getFilename();
+
             //"프로필 추가" -> "프로필 수정"
-            toolbartext.setText(R.string.profile_edit);
+            logo_text.setText(R.string.profile_edit);
         } else {
             profile = new Profile();
         }
@@ -100,20 +104,20 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
         profile.setBirthday(birthday.getText().toString());
         profile.setAddress(address.getText().toString());
 
-        //pid는 수정시에만 존재한다(왜냐면 autoGenerate 때문에)
-        long insertedID;
-        if (profile.getPid() != null) {
-            //업데이트
-            profileDao.update(profile);
-            insertedID = profile.getPid();
-        } else {
-            //추가
-            insertedID = profileDao.insert(profile);
-        }
 
-        //사진이 설정되었다면 저장 한다.
-        if (profile_photo != null) {
-            String filename = String.valueOf(insertedID);
+        //사진이 변경되었다면 저장한다.
+        if (photo_changed) {
+
+            //파일이름이 없다면 처음 세팅하는 것이므로 유니크한 이름을 할당한다.
+            if (profile.getFilename() == null) {
+                //epoch? 부터 현재까지의 시간을 숫자로 반환
+                String filename = String.valueOf(Calendar.getInstance().getTimeInMillis());
+                profile.setFilename(filename);
+            }
+
+            //여기서부터 해야함
+            //파일 저장함
+            /*
             FileOutputStream outputStream;
             try {
                 outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
@@ -121,8 +125,16 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
                 outputStream.close();
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }*/
+        }
 
+        //pid는 수정시에만 존재한다(autoGenerate 때문에)
+        if (profile.getPid() != null) {
+            //업데이트
+            profileDao.update(profile);
+        } else {
+            //추가
+            profileDao.insert(profile);
         }
         finish();
     }
@@ -136,6 +148,7 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
                 case REQUEST_IMAGE_CAPTURE:
                     Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(takePicture, REQUEST_IMAGE_CAPTURE);
+                    ThumbnailUtils t;//?
                     break;
                 //갤러리
                 case SELECT_FROM_GALLERY:
@@ -152,32 +165,28 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmap = null;
         switch (requestCode) {
             case REQUEST_IMAGE_CAPTURE:
                 if (resultCode == RESULT_OK) {
                     Bundle extras = data.getExtras();
-
                     if (extras != null) {
-                        bitmap = (Bitmap) extras.get("data");
+                        profile_photo = (Bitmap) extras.get("data");
                     }
-                    profile_pic.setImageBitmap(bitmap);
-                    profile_photo = bitmap;
                 }
                 break;
             case SELECT_FROM_GALLERY:
                 if (resultCode == RESULT_OK) {
                     Uri uri = data.getData();
                     try {
-                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                        profile_photo = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    profile_pic.setImageBitmap(bitmap);
-                    profile_photo = bitmap;
                 }
                 break;
         }
+        profile_pic.setImageBitmap(profile_photo);
+        photo_changed = true;
     }
 
 }

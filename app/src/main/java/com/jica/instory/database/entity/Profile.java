@@ -26,7 +26,18 @@ public class Profile {
     private String address;
     private String birthday;
 
+    //프로필 사진 파일 이름
+    private String filename;
+
+
     //getters, setters
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
 
     public Integer getPid() {
         return pid;

@@ -32,7 +32,7 @@ public interface ProfileDao{
 
     //삽입
     @Insert
-    long insert(Profile data);
+    void insert(Profile data);
 
     //업데이트
     @Update

@@ -24,7 +24,7 @@
             tools:layout_editor_absoluteY="15dp" />
 
         <TextView
-            android:id="@+id/toolbartext"
+            android:id="@+id/logo_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
