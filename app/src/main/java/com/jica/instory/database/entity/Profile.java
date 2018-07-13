@@ -2,13 +2,15 @@ package com.jica.instory.database.entity;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 import static android.arch.persistence.room.ForeignKey.NO_ACTION;
 
 
-@Entity(foreignKeys = @ForeignKey(entity = Band.class,parentColumns = "bid",childColumns = "bid",onDelete = NO_ACTION,onUpdate = CASCADE))
+@Entity(foreignKeys = @ForeignKey(entity = Band.class,parentColumns = "bid",childColumns = "bid",onDelete = NO_ACTION,onUpdate = CASCADE),
+        indices = {@Index("bid")})
 public class Profile {
     @PrimaryKey(autoGenerate = true)
     private Integer pid;

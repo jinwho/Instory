@@ -24,7 +24,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     //View Holder
     class NoteViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.title)TextView title;
+        @BindView(R.id.date)TextView date;
         @BindView(R.id.contents)TextView contents;
         @BindView(R.id.del)ImageView del;
 
@@ -64,7 +64,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         final Note note = notes.get(position);
 
         //프로필을 view 의 값으로 할당
-        holder.title.setText(note.getTitle());
+        holder.date.setText(note.getDate());
         holder.contents.setText(note.getContent());
         holder.del.setOnClickListener(v -> {
             noteDao = AppDatabase.getInstance(context).noteDao();

@@ -1,27 +1,40 @@
 <resources>
+    <!-- System -->
     <string name="app_name">마이피플</string>
+
+    <!-- Profile -->
     <string name="profile_name">이름</string>
     <string name="profile_comment">한줄평</string>
     <string name="profile_photo">사진</string>
-    <string name="main_menu_listedit">목록 편집</string>
-    <string name="main_menu_group">그룹관리</string>
-    <string name="main_menu_setting">설정</string>
-    <string name="profile_menu_edit">수정</string>
-    <string name="profile_menu_delete">삭제</string>
-    <string name="confirm">확인</string>
-    <string name="cancel">취소</string>
-    <string name="save">저장</string>
     <string name="profile_phone">연락처</string>
     <string name="profile_email">이메일</string>
     <string name="profile_address">집주소</string>
     <string name="profile_birthday">생일</string>
-    <string name="delete_message">프로필을 삭제하시겠습니까?</string>
-    <string name="get_photo">사진을 가져올 방법을 선택하세요.</string>
-    <string name="delete">삭제</string>
-    <string name="group_name">그룹명</string>
-    <string name="add_group">그룹추가</string>
+
+    <!-- Note -->
     <string name="note_title">제목</string>
-    <string name="note_content">내용</string>
+    <string name="note_contents">내용</string>
+
+    <!-- Menu -->
+    <string name="menu_group">그룹</string>
+    <string name="menu_setting">설정</string>
+    <string name="menu_edit">수정</string>
+    <string name="menu_delete">삭제</string>
+    <string name="menu_ok">확인</string>
+    <string name="menu_cancel">취소</string>
+
+    <!-- Dialog Messages-->
+    <string name="photo_menu">사진을 어떻게 가져올까요?</string>
+    <string name="take_photo">카메라로 사진 찍기</string>
+    <string name="from_gallery">앨범에서 가져오기</string>
+    <string name="choose_menu">무엇을 할까요?</string>
+    <string name="new_memo">새 메모</string>
+    <string name="new_group">새 그룹</string>
+
+    <!-- Logo text -->
     <string name="profile_add">프로필 추가</string>
     <string name="profile_edit">프로필 수정</string>
+
+    <!-- Button -->
+    <string name="add_group">그룹추가</string>
 </resources>

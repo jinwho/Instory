@@ -6,6 +6,15 @@ public class ProfileMinimal {
     private int rating;
     private String name;
     private String comment;
+    private String filename;
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
 
     public Integer getPid() {
         return pid;

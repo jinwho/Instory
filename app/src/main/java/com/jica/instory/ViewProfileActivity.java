@@ -1,22 +1,15 @@
 package com.jica.instory;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -24,24 +17,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jica.instory.adapter.NoteAdapter;
-import com.jica.instory.adapter.ProfileAdapter;
 import com.jica.instory.database.AppDatabase;
 import com.jica.instory.database.dao.NoteDao;
 import com.jica.instory.database.entity.Note;
 import com.jica.instory.database.entity.Profile;
 import com.jica.instory.database.dao.ProfileDao;
+import com.jica.instory.manager.MyFileManager;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.content.DialogInterface.BUTTON_NEGATIVE;
-import static android.content.DialogInterface.BUTTON_POSITIVE;
-
-public class ViewProfileActivity extends AppCompatActivity{
+public class ViewProfileActivity extends AppCompatActivity implements View.OnClickListener{
     //DB profile
     private ProfileDao profileDao = AppDatabase.getInstance(this).profileDao();
     private Profile profile;
@@ -77,17 +67,15 @@ public class ViewProfileActivity extends AppCompatActivity{
     //buttons
     @BindView(R.id.back)
     ImageView back;
-    @BindView(R.id.del)
-    ImageView del;
-    @BindView(R.id.edit)
-    ImageView edit;
+    @BindView(R.id.menu)
+    ImageView menu;
     @BindView(R.id.add_note)
     ImageView add_note;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_profile);
+        setContentView(R.layout.activity_profile_view);
         ButterKnife.bind(this);
 
         intent = getIntent();
@@ -108,42 +96,39 @@ public class ViewProfileActivity extends AppCompatActivity{
         recyclerView.setAdapter(noteAdapter);
         noteAdapter.setNotes(notes);
 
-        /*
-        get photo from profile file name
-         */
+        //get photo from profile file name, and set pic only if it's exist
+        Bitmap bitmap = MyFileManager.getInstance().loadImage(this,profile.getFilename());
+        if (bitmap != null) profile_pic.setImageBitmap(bitmap);
 
-
-
-        // if data exist than make it clickable otherwise make it grey //
-        /*
-        phone.setText(profile.getPhone());
-        email.setText(profile.getEmail());
-        birthday.setText(profile.getBirthday());
-        address.setText(profile.getAddress());
-        */
-        phone.setOnClickListener(v -> Toast.makeText(ViewProfileActivity.this, profile.getPhone(), Toast.LENGTH_SHORT).show());
-        email.setOnClickListener(v -> Toast.makeText(ViewProfileActivity.this, profile.getEmail(), Toast.LENGTH_SHORT).show());
-        birthday.setOnClickListener(v -> Toast.makeText(ViewProfileActivity.this, profile.getBirthday(), Toast.LENGTH_SHORT).show());
-        address.setOnClickListener(v -> Toast.makeText(ViewProfileActivity.this, profile.getAddress(), Toast.LENGTH_SHORT).show());
-
+        //set click listeners
+        phone.setOnClickListener(this);
+        email.setOnClickListener(this);
+        birthday.setOnClickListener(this);
+        address.setOnClickListener(this);
 
         //buttons
         back.setOnClickListener(v -> finish());
-        del.setOnClickListener(v -> {
+        menu.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.delete_message);
-            builder.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> {
-                profileDao.delete(profile);
-                finish();
+            builder.setTitle(R.string.choose_menu);
+            builder.setItems(R.array.main_menu, (dialog, which) -> {
+                switch (which) {
+                    //수정
+                    case 0:
+                        intent = new Intent(getApplicationContext(), NewProfileActivity.class);
+                        intent.putExtra("id", profile.getPid());
+                        startActivity(intent);
+                        finish();
+                        break;
+                    //삭제
+                    case 1:
+                        //how to ask here??
+                        profileDao.delete(profile);
+                        finish();
+                        break;
+                }
             });
-            builder.setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.dismiss());
             builder.create().show();
-        });
-        edit.setOnClickListener(v -> {
-            intent = new Intent(this, AddOrEditProfileActivity.class);
-            intent.putExtra("id", profile.getPid());
-            startActivity(intent);
-            finish();
         });
 
 
@@ -152,18 +137,20 @@ public class ViewProfileActivity extends AppCompatActivity{
             note.setPid(profile.getPid());
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("새 메모");
-            // Set up the input
-            final EditText title = new EditText(this);
-            //final EditText contents = new EditText(this);
-            // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-            title.setInputType(InputType.TYPE_CLASS_TEXT);
-            builder.setView(title);
-            //builder.setAdapter()
+            builder.setTitle(R.string.new_memo);
+
+            final EditText contents = new EditText(this);
+            contents.setHint(R.string.note_contents);
+
+            builder.setView(contents);
+
             builder.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> {
-                note.setTitle(title.getText().toString());
-                note.setContent("this is test note");
-                dialogInterface.dismiss();
+                Date date = new Date(System.currentTimeMillis());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+                String getTime = sdf.format(date);
+
+                note.setDate(getTime);
+                note.setContent(contents.getText().toString());
                 noteDao.insert(note);
                 notes.add(note);
                 noteAdapter.notifyItemInserted(noteAdapter.getItemCount());
@@ -171,5 +158,40 @@ public class ViewProfileActivity extends AppCompatActivity{
             builder.setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.dismiss());
             builder.create().show();
         });
+    }
+
+    //handle 4 image button clicks
+    @Override
+    public void onClick(View v) {
+        String data;
+        switch (v.getId()) {
+            case R.id.phone_img :
+                data = profile.getPhone();
+                if ( !data.isEmpty()) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+data));
+                    startActivity(intent);
+                }
+                break;
+            case R.id.email_img :
+                data = profile.getEmail();
+                if ( !data.isEmpty()) {
+                    Intent intent = new Intent(Intent.ACTION_SENDTO,Uri.parse("mailto:"+data));
+                    startActivity(intent);
+                }
+                break;
+            case R.id.birthday_img :
+                data = profile.getBirthday();
+                if ( !data.isEmpty()) {
+                    //오늘 날짜를 생일과 비교해서 남은 일을 알려준다.
+                    Toast.makeText(this, "생일 : " + data, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.address_img :
+                data = profile.getAddress();
+                if ( !data.isEmpty()) {
+                    Toast.makeText(this, "주소 : " + data, Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 }

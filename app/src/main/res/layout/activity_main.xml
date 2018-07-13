@@ -14,7 +14,7 @@
         android:paddingRight="16dp">
 
         <ImageView
-            android:id="@+id/toolbar_logo"
+            android:id="@+id/logo_text"
             android:layout_width="70dp"
             android:layout_height="26dp"
             android:layout_gravity="center"
@@ -23,7 +23,7 @@
             tools:layout_editor_absoluteY="15dp" />
 
         <ImageView
-            android:id="@+id/menu_button"
+            android:id="@+id/main_menu"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="end"
@@ -33,7 +33,7 @@
             tools:layout_editor_absoluteY="4dp" />
 
     </android.support.v7.widget.Toolbar>
-    <include layout="@layout/bottom_border"/>
+    <include layout="@layout/border_bottom"/>
 
 
 

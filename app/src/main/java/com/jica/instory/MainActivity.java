@@ -18,8 +18,10 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
     private ProfileDao profileDao;
     private ProfileAdapter profileAdapter;
+
     @BindView(R.id.profile_list) RecyclerView recyclerView;
-    @BindView(R.id.menu_button) ImageView menu_button;
+    @BindView(R.id.main_menu) ImageView main_menu;
+    @BindView(R.id.fab) FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,14 +31,13 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         //FloatingActionButton 클릭시 프로필 추가 화면으로
-        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), AddOrEditProfileActivity.class);
+            Intent intent = new Intent(getApplicationContext(), NewProfileActivity.class);
             startActivity(intent);
         });
 
         //메뉴버튼 클릭시 어차피 설정화면 없으니까 그룹 화면으로
-        menu_button.setOnClickListener(v -> {
+        main_menu.setOnClickListener(v -> {
             Intent intent = new Intent(this, GroupActivity.class);
             startActivity(intent);
         });

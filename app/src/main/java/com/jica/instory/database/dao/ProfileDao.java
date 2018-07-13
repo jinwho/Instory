@@ -27,7 +27,7 @@ public interface ProfileDao{
 
     // 최소한의 프로필 정보
     // id, 레이팅, 이름, 한줄평
-    @Query("SELECT pid, rating, name, comment FROM profile")
+    @Query("SELECT pid, rating, name, comment,filename FROM profile")
     List<ProfileMinimal> getAllMinimal();
 
     //삽입

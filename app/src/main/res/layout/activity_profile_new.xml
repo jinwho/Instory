@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddOrEditProfileActivity">
+    tools:context=".NewProfileActivity">
 
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
@@ -34,20 +34,24 @@
             tools:layout_editor_absoluteX="158dp"
             tools:layout_editor_absoluteY="19dp" />
 
-        <ImageView
-            android:id="@+id/save"
+        <TextView
+            android:id="@+id/ok"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="end"
-            app:srcCompat="@android:drawable/ic_menu_save"
-            tools:layout_editor_absoluteX="336dp"
-            tools:layout_editor_absoluteY="12dp" />
+            android:gravity="center"
+            android:text="@string/menu_ok"
+            android:textColor="@color/ColorFont"
+            android:textSize="12sp"
+            tools:layout_editor_absoluteX="320dp"
+            tools:layout_editor_absoluteY="4dp" />
 
 
 
     </android.support.v7.widget.Toolbar>
 
-    <include layout="@layout/bottom_border"/>
+    <include layout="@layout/border_bottom"/>
+
 
 
 
@@ -105,7 +109,7 @@
             android:layout_height="0dp"
             android:gravity="center"
             android:hint="@string/profile_comment"
-            android:inputType="text"
+            android:inputType="textLongMessage"
             android:singleLine="true"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -188,7 +192,7 @@
                 android:layout_marginEnd="32dp"
                 android:layout_marginStart="32dp"
                 android:hint="@string/profile_email"
-                android:inputType="text"
+                android:inputType="textWebEmailAddress"
                 android:singleLine="true"
                 android:textAlignment="center"
                 android:textSize="12sp"
@@ -261,14 +265,14 @@
                 android:layout_marginEnd="32dp"
                 android:layout_marginStart="32dp"
                 android:hint="@string/profile_address"
-                android:inputType="text"
                 android:singleLine="true"
                 android:textAlignment="center"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/address_img"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:inputType="" />
         </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>

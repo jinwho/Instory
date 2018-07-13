@@ -23,7 +23,7 @@ public class BandAdapter extends RecyclerView.Adapter<BandAdapter.BandViewHolder
         private TextView name;
         private ImageView del;
 
-        public BandViewHolder(View itemView) {
+        private BandViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
             del = itemView.findViewById(R.id.del);
@@ -33,12 +33,11 @@ public class BandAdapter extends RecyclerView.Adapter<BandAdapter.BandViewHolder
     //그룹 목록
     private List<Band> bands;
     private final LayoutInflater mInflater;
-    private Context context;
     private BandDao bandDao;
 
     public BandAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
-        this.context = context;
+        bandDao = AppDatabase.getInstance(context).bandDao();
     }
 
     public void setBands(List<Band> bands) {
@@ -59,7 +58,6 @@ public class BandAdapter extends RecyclerView.Adapter<BandAdapter.BandViewHolder
 
         holder.name.setText(band.getName());
         holder.del.setOnClickListener(v -> {
-            bandDao = AppDatabase.getInstance(context).bandDao();
             bandDao.delete(bands.get(position));
             removeAt(position);
         });
@@ -72,7 +70,7 @@ public class BandAdapter extends RecyclerView.Adapter<BandAdapter.BandViewHolder
         else return 0;
     }
 
-    public void removeAt(int position) {
+    private void removeAt(int position) {
         bands.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, bands.size());

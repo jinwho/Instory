@@ -1,6 +1,6 @@
 package com.jica.instory;
 
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
@@ -14,18 +14,21 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jica.instory.database.AppDatabase;
 import com.jica.instory.database.entity.Profile;
 import com.jica.instory.database.dao.ProfileDao;
+import com.jica.instory.manager.MyFileManager;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AddOrEditProfileActivity extends AppCompatActivity {
+public class NewProfileActivity extends AppCompatActivity {
     //DB
     private ProfileDao profileDao = AppDatabase.getInstance(this).profileDao();
     private Profile profile;
@@ -51,13 +54,13 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
     //toolbar buttons
     @BindView(R.id.back) ImageView back;
     @BindView(R.id.logo_text) TextView logo_text;
-    @BindView(R.id.save) ImageView save;
+    @BindView(R.id.ok) TextView ok;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_addedit_profile);
+        setContentView(R.layout.activity_profile_new);
         ButterKnife.bind(this);
 
         //수정하기 위해 호출되었다면 id를 얻어 프로필 객체를 불러온다.
@@ -65,6 +68,8 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
         if (intent.hasExtra("id")) {
             Integer id = intent.getIntExtra("id", -1);
             profile = profileDao.get(id);
+            //"프로필 추가" -> "프로필 수정"
+            logo_text.setText(R.string.profile_edit);
             //set view
             ratingBar.setRating(profile.getRating());
             name.setText(profile.getName());
@@ -74,12 +79,10 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
             birthday.setText(profile.getBirthday());
             address.setText(profile.getAddress());
 
+            //수정할 때 이미지파일이 존재한다면 가져온다.
+            Bitmap bitmap = MyFileManager.getInstance().loadImage(this,profile.getFilename());
+            if (bitmap != null) profile_pic.setImageBitmap(bitmap);
 
-            //if file exist set to profile_pic
-            //profile_pic.setImage( get file from db) profile.getFilename();
-
-            //"프로필 추가" -> "프로필 수정"
-            logo_text.setText(R.string.profile_edit);
         } else {
             profile = new Profile();
         }
@@ -88,8 +91,8 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
         back.setOnClickListener(v -> {
             finish();
         });
-        //save button
-        save.setOnClickListener(v -> {
+        //ok button
+        ok.setOnClickListener(v -> {
             SaveProfile();
         });
     }
@@ -116,17 +119,17 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
                 profile.setFilename(filename);
             }
 
-            //여기서부터 해야함
             //파일 저장함
-            /*
-            FileOutputStream outputStream;
+            /*FileOutputStream outputStream;
             try {
-                outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
-                profile_photo.compress(Bitmap.CompressFormat.PNG, 30, outputStream);
+                outputStream = openFileOutput(profile.getFilename(), Context.MODE_PRIVATE);
+                //photo has already resized, although small size would be better..
+                profile_photo.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
                 outputStream.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }*/
+            MyFileManager.getInstance().saveImage(profile_photo,this,profile.getFilename());
         }
 
         //pid는 수정시에만 존재한다(autoGenerate 때문에)
@@ -142,19 +145,19 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
 
     //사진공간이 클릭 되었을 때
     public void onClickPhoto(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(AddOrEditProfileActivity.this);
-        builder.setTitle(R.string.get_photo).setItems(R.array.photo_choice, (dialog, which) -> {
+        AlertDialog.Builder builder = new AlertDialog.Builder(NewProfileActivity.this);
+        builder.setTitle(R.string.photo_menu).setItems(R.array.photo_choice, (dialog, which) -> {
+            Intent intent;
             switch (which) {
                 //카메라
                 case 0:
-                    Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    AddOrEditProfileActivity.this.startActivityForResult(takePicture, REQUEST_IMAGE_CAPTURE);
+                    intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
                     break;
                 //갤러리
                 case 1:
-                    Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    AddOrEditProfileActivity.this.startActivityForResult(pickPhoto, SELECT_FROM_GALLERY);
+                    intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, SELECT_FROM_GALLERY);
                     break;
             }
         });
@@ -165,27 +168,26 @@ public class AddOrEditProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Bitmap bitmap = null;
         switch (requestCode) {
             case REQUEST_IMAGE_CAPTURE:
                 if (resultCode == RESULT_OK) {
                     Bundle extras = data.getExtras();
-                    if (extras != null) {
-                        profile_photo = (Bitmap) extras.get("data");
-                    }
+                    bitmap = ThumbnailUtils.extractThumbnail((Bitmap) extras.get("data"),100,100);
                 }
                 break;
             case SELECT_FROM_GALLERY:
-                ThumbnailUtils t;//how to get thumbnail of photo?
                 if (resultCode == RESULT_OK) {
                     Uri uri = data.getData();
                     try {
-                        profile_photo = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                        bitmap = ThumbnailUtils.extractThumbnail(MediaStore.Images.Media.getBitmap(getContentResolver(), uri),100, 100);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
                 break;
         }
+        profile_photo = bitmap;
         profile_pic.setImageBitmap(profile_photo);
         photo_changed = true;
     }

@@ -2,10 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jica.instory">
 
-    <uses-feature
-        android:name="android.hardware.camera2"
-        android:required="true" />
+    <uses-feature android:name="android.hardware.camera2" android:required="true" />
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
 
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -29,7 +29,7 @@
 
         <activity android:name=".MainActivity"/>
         <activity android:name=".ViewProfileActivity" />
-        <activity android:name=".AddOrEditProfileActivity" />
+        <activity android:name=".NewProfileActivity" />
         <activity android:name=".GroupActivity" />
     </application>
 
