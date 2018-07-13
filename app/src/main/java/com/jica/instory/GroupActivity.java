@@ -48,13 +48,6 @@ public class GroupActivity extends AppCompatActivity {
         rv.setAdapter(bandAdapter);
         bandAdapter.setBands(bands);
 
-        /*save.setOnClickListener(v -> {
-            Band b = new Band();
-            b.setName(contents.getText().toString());
-            bandDao.insert(b);
-            bandAdapter.setBands(bandDao.getAll());
-            contents.setText("");
-        });*/
         back.setOnClickListener(v -> finish());
 
         add_group.setOnClickListener(v -> {

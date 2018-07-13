@@ -23,21 +23,26 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileViewHolder> {
 
     //View Holder
     class ProfileViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.profile_pic) ImageView profile_pic;
-        @BindView(R.id.name) TextView name;
-        @BindView(R.id.comment) TextView comment;
-        @BindView(R.id.ratingBar) RatingBar rating;
+        @BindView(R.id.profile_pic)
+        CircleImageView profile_pic;
+        @BindView(R.id.name)
+        TextView name;
+        @BindView(R.id.comment)
+        TextView comment;
+        @BindView(R.id.ratingBar)
+        RatingBar rating;
 
         ProfileViewHolder(View itemView) {
             super(itemView);
             setIsRecyclable(false);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 
@@ -75,7 +80,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
         holder.rating.setRating(profile.getRating());
 
         //사진이 있을 경우에만 보여준다.
-        Bitmap bitmap = MyFileManager.getInstance().loadImage(context,profile.getFilename());
+        Bitmap bitmap = MyFileManager.getInstance().loadImage(context, profile.getFilename());
         if (bitmap != null) holder.profile_pic.setImageBitmap(bitmap);
 
         //해당 item 클릭시 ViewProfileActivity 에 id를 전달하고 넘어간다.

@@ -30,6 +30,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ViewProfileActivity extends AppCompatActivity implements View.OnClickListener{
     //DB profile
@@ -50,7 +51,7 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
     @BindView(R.id.ratingBar)
     RatingBar ratingBar;
     @BindView(R.id.profile_pic)
-    ImageView profile_pic;
+    CircleImageView profile_pic;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 

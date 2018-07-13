@@ -46,5 +46,4 @@ public class MyFileManager {
         }
         return bitmap;
     }
-
 }

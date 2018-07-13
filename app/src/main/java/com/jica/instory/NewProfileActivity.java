@@ -27,6 +27,7 @@ import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NewProfileActivity extends AppCompatActivity {
     //DB
@@ -42,19 +43,30 @@ public class NewProfileActivity extends AppCompatActivity {
     private boolean photo_changed = false;
 
     //views
-    @BindView(R.id.profile_pic)  ImageView profile_pic;
-    @BindView(R.id.ratingBar) RatingBar ratingBar;
-    @BindView(R.id.name) EditText name;
-    @BindView(R.id.comment) EditText comment;
-    @BindView(R.id.phone) EditText  phone;
-    @BindView(R.id.email) EditText email;
-    @BindView(R.id.birthday) TextView birthday;
-    @BindView(R.id.address) EditText address;
+    @BindView(R.id.profile_pic)
+    CircleImageView profile_pic;
+    @BindView(R.id.ratingBar)
+    RatingBar ratingBar;
+    @BindView(R.id.name)
+    EditText name;
+    @BindView(R.id.comment)
+    EditText comment;
+    @BindView(R.id.phone)
+    EditText phone;
+    @BindView(R.id.email)
+    EditText email;
+    @BindView(R.id.birthday)
+    TextView birthday;
+    @BindView(R.id.address)
+    EditText address;
 
     //toolbar buttons
-    @BindView(R.id.back) ImageView back;
-    @BindView(R.id.logo_text) TextView logo_text;
-    @BindView(R.id.ok) TextView ok;
+    @BindView(R.id.back)
+    ImageView back;
+    @BindView(R.id.logo_text)
+    TextView logo_text;
+    @BindView(R.id.ok)
+    TextView ok;
 
 
     @Override
@@ -80,7 +92,7 @@ public class NewProfileActivity extends AppCompatActivity {
             address.setText(profile.getAddress());
 
             //수정할 때 이미지파일이 존재한다면 가져온다.
-            Bitmap bitmap = MyFileManager.getInstance().loadImage(this,profile.getFilename());
+            Bitmap bitmap = MyFileManager.getInstance().loadImage(this, profile.getFilename());
             if (bitmap != null) profile_pic.setImageBitmap(bitmap);
 
         } else {
@@ -129,7 +141,7 @@ public class NewProfileActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }*/
-            MyFileManager.getInstance().saveImage(profile_photo,this,profile.getFilename());
+            MyFileManager.getInstance().saveImage(profile_photo, this, profile.getFilename());
         }
 
         //pid는 수정시에만 존재한다(autoGenerate 때문에)
@@ -173,14 +185,14 @@ public class NewProfileActivity extends AppCompatActivity {
             case REQUEST_IMAGE_CAPTURE:
                 if (resultCode == RESULT_OK) {
                     Bundle extras = data.getExtras();
-                    bitmap = ThumbnailUtils.extractThumbnail((Bitmap) extras.get("data"),100,100);
+                    bitmap = ThumbnailUtils.extractThumbnail((Bitmap) extras.get("data"), 100, 100);
                 }
                 break;
             case SELECT_FROM_GALLERY:
                 if (resultCode == RESULT_OK) {
                     Uri uri = data.getData();
                     try {
-                        bitmap = ThumbnailUtils.extractThumbnail(MediaStore.Images.Media.getBitmap(getContentResolver(), uri),100, 100);
+                        bitmap = ThumbnailUtils.extractThumbnail(MediaStore.Images.Media.getBitmap(getContentResolver(), uri), 100, 100);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

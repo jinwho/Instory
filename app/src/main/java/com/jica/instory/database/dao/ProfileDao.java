@@ -19,7 +19,7 @@ public interface ProfileDao{
 
     // 그룹에 포함되는 프로필 목록
     @Query("SELECT * FROM profile WHERE bid IS :bid")
-    List<Profile> gets(Integer bid);
+    List<Profile> groupBy(Integer bid);
 
     //모든 프로필
     @Query("SELECT * FROM profile")
