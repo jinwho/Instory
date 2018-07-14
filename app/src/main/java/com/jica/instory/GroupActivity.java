@@ -38,6 +38,7 @@ public class GroupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.enter,R.anim.exit);
         setContentView(R.layout.activity_group);
         ButterKnife.bind(this);
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -48,7 +49,7 @@ public class GroupActivity extends AppCompatActivity {
         rv.setAdapter(bandAdapter);
         bandAdapter.setBands(bands);
 
-        back.setOnClickListener(v -> finish());
+        back.setOnClickListener(v ->  onBackPressed());
 
         add_group.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(GroupActivity.this);
@@ -68,5 +69,11 @@ public class GroupActivity extends AppCompatActivity {
             builder.setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.dismiss());
             builder.create().show();
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.left2right,R.anim.right2left);
     }
 }

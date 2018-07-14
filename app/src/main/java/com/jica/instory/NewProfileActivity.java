@@ -72,6 +72,8 @@ public class NewProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        overridePendingTransition(R.anim.enter,R.anim.exit);
         setContentView(R.layout.activity_profile_new);
         ButterKnife.bind(this);
 
@@ -99,14 +101,8 @@ public class NewProfileActivity extends AppCompatActivity {
             profile = new Profile();
         }
 
-        //back button
-        back.setOnClickListener(v -> {
-            finish();
-        });
-        //ok button
-        ok.setOnClickListener(v -> {
-            SaveProfile();
-        });
+        back.setOnClickListener(v -> onBackPressed());
+        ok.setOnClickListener(v -> SaveProfile());
     }
 
     //저장 버튼 클릭
@@ -152,7 +148,7 @@ public class NewProfileActivity extends AppCompatActivity {
             //추가
             profileDao.insert(profile);
         }
-        finish();
+        onBackPressed();
     }
 
     //사진공간이 클릭 되었을 때
@@ -204,4 +200,9 @@ public class NewProfileActivity extends AppCompatActivity {
         photo_changed = true;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.left2right,R.anim.right2left);
+    }
 }

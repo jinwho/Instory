@@ -76,6 +76,8 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        overridePendingTransition(R.anim.enter,R.anim.exit);
         setContentView(R.layout.activity_profile_view);
         ButterKnife.bind(this);
 
@@ -108,7 +110,7 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
         address.setOnClickListener(this);
 
         //buttons
-        back.setOnClickListener(v -> finish());
+        back.setOnClickListener(v -> onBackPressed());
         menu.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.choose_menu);
@@ -194,5 +196,11 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.left2right,R.anim.right2left);
     }
 }
