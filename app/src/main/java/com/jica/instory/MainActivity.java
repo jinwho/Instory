@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
         //DB에 저장 되어있는 프로필 목록을 불러와 어댑터 에서 처리한다.
         profileDao = AppDatabase.getInstance(this).profileDao();
         profileAdapter = new ProfileAdapter(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(profileAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     //when visible -> update view

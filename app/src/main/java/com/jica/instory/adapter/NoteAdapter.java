@@ -19,30 +19,32 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder>  {
+public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
 
     //View Holder
     class NoteViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.date)TextView date;
-        @BindView(R.id.contents)TextView contents;
-        @BindView(R.id.del)ImageView del;
+        @BindView(R.id.date)
+        TextView date;
+        @BindView(R.id.contents)
+        TextView contents;
+        @BindView(R.id.del)
+        ImageView del;
 
         NoteViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 
     //프로필 목록
     private List<Note> notes;
     private final LayoutInflater mInflater;
-    private Context context;
     private NoteDao noteDao;
 
     public NoteAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
-        this.context = context;
+        noteDao = AppDatabase.getInstance(context).noteDao();
     }
 
     public void setNotes(List<Note> notes) {
@@ -67,8 +69,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         holder.date.setText(note.getDate());
         holder.contents.setText(note.getContent());
         holder.del.setOnClickListener(v -> {
-            noteDao = AppDatabase.getInstance(context).noteDao();
-            noteDao.delete(notes.get(position));
+            noteDao.delete(note);
             removeAt(position);
         });
     }
@@ -80,7 +81,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         else return 0;
     }
 
-    public void removeAt(int position) {
+    private void removeAt(int position) {
         notes.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, notes.size());

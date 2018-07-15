@@ -62,7 +62,8 @@ public class GroupActivity extends AppCompatActivity {
             builder.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> {
                 Band band = new Band();
                 band.setName(group_name.getText().toString());
-                bandDao.insert(band);
+
+                band.setBid((int) bandDao.insert(band));
                 bands.add(band);
                 bandAdapter.notifyItemInserted(bandAdapter.getItemCount());
             });

@@ -71,25 +71,27 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
 
     @Override
     public void onBindViewHolder(@NonNull ProfileViewHolder holder, int position) {
-        //위치에 해당하는 프로필
-        final ProfileMinimal profile = profiles.get(position);
 
-        //프로필을 view 의 값으로 할당
-        holder.name.setText(profile.getName());
-        holder.comment.setText(profile.getComment());
-        holder.rating.setRating(profile.getRating());
+        if (profiles != null) {
+            //위치에 해당하는 프로필
+            final ProfileMinimal profile = profiles.get(position);
+            //프로필을 view 의 값으로 할당
+            holder.name.setText(profile.getName());
+            holder.comment.setText(profile.getComment());
+            holder.rating.setRating(profile.getRating());
 
-        //사진이 있을 경우에만 보여준다.
-        Bitmap bitmap = MyFileManager.getInstance().loadImage(context, profile.getFilename());
-        if (bitmap != null) holder.profile_pic.setImageBitmap(bitmap);
+            //사진이 있을 경우에만 보여준다.
+            Bitmap bitmap = MyFileManager.getInstance().loadImage(context, profile.getFilename());
+            if (bitmap != null) holder.profile_pic.setImageBitmap(bitmap);
 
-        //해당 item 클릭시 ViewProfileActivity 에 id를 전달하고 넘어간다.
-        holder.itemView.setOnClickListener(v -> {
-            Context context = v.getContext();
-            Intent intent = new Intent(context, ViewProfileActivity.class);
-            intent.putExtra("id", profile.getPid());
-            context.startActivity(intent);
-        });
+            //해당 item 클릭시 ViewProfileActivity 에 id를 전달하고 넘어간다.
+            holder.itemView.setOnClickListener(v -> {
+                Context context = v.getContext();
+                Intent intent = new Intent(context, ViewProfileActivity.class);
+                intent.putExtra("id", profile.getPid());
+                context.startActivity(intent);
+            });
+        }
     }
 
     @Override

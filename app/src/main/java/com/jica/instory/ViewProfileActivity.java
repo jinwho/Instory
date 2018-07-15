@@ -151,10 +151,9 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
                 Date date = new Date(System.currentTimeMillis());
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
                 String getTime = sdf.format(date);
-
                 note.setDate(getTime);
                 note.setContent(contents.getText().toString());
-                noteDao.insert(note);
+                note.setNid((int) noteDao.insert(note));
                 notes.add(note);
                 noteAdapter.notifyItemInserted(noteAdapter.getItemCount());
             });

@@ -23,7 +23,7 @@ public interface BandDao{
 
     //삽입
     @Insert
-    void insert(Band data);
+    long insert(Band data);
 
     //업데이트
     @Update

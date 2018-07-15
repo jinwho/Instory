@@ -23,7 +23,7 @@ public interface NoteDao{
 
     //삽입
     @Insert
-    void insert(Note data);
+    long insert(Note data);
 
     //업데이트
     @Update
