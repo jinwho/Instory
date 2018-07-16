@@ -17,15 +17,12 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
 
         /* SPLASH_DISPLAY_LENGTH 뒤에 메뉴 액티비티를 실행시키고 종료한다.*/
-        new Handler().postDelayed(new Runnable(){
-            @Override
-            public void run() {
-                /* 메뉴액티비티를 실행하고 로딩화면을 죽인다.*/
-                Intent mainIntent = new Intent(getApplicationContext(),MainActivity.class);
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(mainIntent);
-                finish();
-            }
+        new Handler().postDelayed(() -> {
+            /* 메뉴액티비티를 실행하고 로딩화면을 죽인다.*/
+            Intent mainIntent = new Intent(getApplicationContext(),MainActivity.class);
+            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(mainIntent);
+            finish();
         }, SPLASH_DISPLAY_LENGTH);
     }
 }

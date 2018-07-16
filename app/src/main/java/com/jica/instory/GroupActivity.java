@@ -2,19 +2,80 @@ package com.jica.instory;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+
+import com.jica.instory.adapter.BandAdapter;
+import com.jica.instory.database.AppDatabase;
+import com.jica.instory.database.dao.BandDao;
+import com.jica.instory.database.entity.Band;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class GroupActivity extends AppCompatActivity {
+    BandDao bandDao = AppDatabase.getInstance(this).bandDao();
+    List<Band> bands;
+    BandAdapter bandAdapter;
+
+    @BindView(R.id.rv)
+    RecyclerView rv;
+    @BindView(R.id.back)
+    ImageView back;
+    @BindView(R.id.add_group)
+    Button add_group;
+
+    //인텐트가 있으면 그룹선택을 위해서 오는 것이므로 그룹추가 버튼을 없애고, 로고를 그룹선택으로 바꾸고
+    //그룹 클릭시에 해당 bid를 결과값으로 보내야한다.
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.enter,R.anim.exit);
+        setContentView(R.layout.activity_group);
+        ButterKnife.bind(this);
+        rv.setLayoutManager(new LinearLayoutManager(this));
 
-        //뒤로가기 버튼
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        //get db
+        bands = bandDao.getAll();
+        bandAdapter = new BandAdapter(this);
+        rv.setAdapter(bandAdapter);
+        bandAdapter.setBands(bands);
+
+        back.setOnClickListener(v ->  onBackPressed());
+
+        add_group.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(GroupActivity.this);
+            builder.setTitle(R.string.new_group);
+            // Set up the input
+            final EditText group_name = new EditText(GroupActivity.this);
+            // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+            group_name.setInputType(InputType.TYPE_CLASS_TEXT);
+            builder.setView(group_name);
+            builder.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> {
+                Band band = new Band();
+                band.setName(group_name.getText().toString());
+
+                band.setBid((int) bandDao.insert(band));
+                bands.add(band);
+                bandAdapter.notifyItemInserted(bandAdapter.getItemCount());
+            });
+            builder.setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.dismiss());
+            builder.create().show();
+        });
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.left2right,R.anim.right2left);
+    }
 }

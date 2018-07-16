@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="photo_choice">
-        <item>카메라로 사진 찍기</item>
-        <item>앨범에서 가져오기</item>
+        <item>@string/take_photo</item>
+        <item>@string/from_gallery</item>
+    </string-array>
+
+    <string-array name="view_menu">
+        <item>@string/menu_edit</item>
+        <item>@string/menu_delete</item>
+        <item>@string/menu_select_group</item>
     </string-array>
 </resources>
