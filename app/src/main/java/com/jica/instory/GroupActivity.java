@@ -34,7 +34,8 @@ public class GroupActivity extends AppCompatActivity {
     @BindView(R.id.add_group)
     Button add_group;
 
-
+    //인텐트가 있으면 그룹선택을 위해서 오는 것이므로 그룹추가 버튼을 없애고, 로고를 그룹선택으로 바꾸고
+    //그룹 클릭시에 해당 bid를 결과값으로 보내야한다.
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

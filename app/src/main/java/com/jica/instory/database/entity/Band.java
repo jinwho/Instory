@@ -8,6 +8,7 @@ public class Band {
     @PrimaryKey(autoGenerate = true)
     private Integer bid;
 
+
     private String name;
 
 

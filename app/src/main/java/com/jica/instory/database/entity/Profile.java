@@ -5,6 +5,9 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 import static android.arch.persistence.room.ForeignKey.NO_ACTION;
 
@@ -22,11 +25,39 @@ public class Profile {
     private String name;
     private String comment;
 
-    //번호,이메일,주소,생일
+    //번호,이메일,주소
     private String phone;
     private String email;
     private String address;
-    private String birthday;
+
+    // 생일
+    private int year;
+    private int month;
+    private int day;
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
 
     //프로필 사진 파일 이름
     private String filename;
@@ -103,13 +134,5 @@ public class Profile {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
     }
 }

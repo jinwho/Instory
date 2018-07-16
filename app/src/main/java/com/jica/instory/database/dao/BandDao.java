@@ -17,6 +17,9 @@ public interface BandDao{
     @Query("SELECT * FROM band WHERE bid IS :bid")
     Band get(Integer bid);
 
+    @Query("SELECT * FROM band WHERE name IS :name")
+    Band get(String name);
+
     //모든 그룹
     @Query("SELECT * FROM band")
     List<Band> getAll();

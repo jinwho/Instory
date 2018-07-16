@@ -1,6 +1,6 @@
 package com.jica.instory;
 
-import android.content.Context;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
@@ -21,7 +21,6 @@ import com.jica.instory.database.entity.Profile;
 import com.jica.instory.database.dao.ProfileDao;
 import com.jica.instory.manager.MyFileManager;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 
@@ -73,7 +72,7 @@ public class NewProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        overridePendingTransition(R.anim.enter,R.anim.exit);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
         setContentView(R.layout.activity_profile_new);
         ButterKnife.bind(this);
 
@@ -90,7 +89,7 @@ public class NewProfileActivity extends AppCompatActivity {
             comment.setText(profile.getComment());
             phone.setText(profile.getPhone());
             email.setText(profile.getEmail());
-            birthday.setText(profile.getBirthday());
+            if(profile.getYear() != 0) birthday.setText(getString(R.string.calendar_format, profile.getYear(), profile.getMonth()+1, profile.getDay()));
             address.setText(profile.getAddress());
 
             //수정할 때 이미지파일이 존재한다면 가져온다.
@@ -103,6 +102,20 @@ public class NewProfileActivity extends AppCompatActivity {
 
         back.setOnClickListener(v -> onBackPressed());
         ok.setOnClickListener(v -> SaveProfile());
+        birthday.setOnClickListener(v -> {
+            final Calendar c = Calendar.getInstance();
+            int mYear = c.get(Calendar.YEAR);
+            int mMonth = c.get(Calendar.MONTH);
+            int mDay = c.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog dpd = new DatePickerDialog(NewProfileActivity.this,
+                    (view, year, monthOfYear, dayOfMonth) -> {
+                        birthday.setText(getString(R.string.calendar_format, year, monthOfYear + 1, dayOfMonth));
+                        profile.setYear(year);
+                        profile.setMonth(monthOfYear);
+                        profile.setDay(dayOfMonth);
+                    }, mYear, mMonth, mDay);
+            dpd.show();
+        });
     }
 
     //저장 버튼 클릭
@@ -113,7 +126,6 @@ public class NewProfileActivity extends AppCompatActivity {
         profile.setComment(comment.getText().toString());
         profile.setPhone(phone.getText().toString());
         profile.setEmail(email.getText().toString());
-        profile.setBirthday(birthday.getText().toString());
         profile.setAddress(address.getText().toString());
 
 
@@ -128,15 +140,6 @@ public class NewProfileActivity extends AppCompatActivity {
             }
 
             //파일 저장함
-            /*FileOutputStream outputStream;
-            try {
-                outputStream = openFileOutput(profile.getFilename(), Context.MODE_PRIVATE);
-                //photo has already resized, although small size would be better..
-                profile_photo.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-                outputStream.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
             MyFileManager.getInstance().saveImage(profile_photo, this, profile.getFilename());
         }
 
@@ -144,9 +147,11 @@ public class NewProfileActivity extends AppCompatActivity {
         if (profile.getPid() != null) {
             //업데이트
             profileDao.update(profile);
+            Toast.makeText(this, "프로필이 변경 되었습니다.", Toast.LENGTH_SHORT).show();
         } else {
             //추가
             profileDao.insert(profile);
+            Toast.makeText(this, "프로필이 저장 되었습니다.", Toast.LENGTH_SHORT).show();
         }
         onBackPressed();
     }
@@ -203,6 +208,8 @@ public class NewProfileActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.left2right,R.anim.right2left);
+        overridePendingTransition(R.anim.left2right, R.anim.right2left);
     }
+
+
 }
