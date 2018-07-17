@@ -56,9 +56,10 @@
             android:layout_height="wrap_content"
             android:isIndicator="true"
             android:numStars="5"
+            android:progressTint="@color/ColorButton"
             android:stepSize="1"
             tools:layout_editor_absoluteX="98dp"
-            tools:layout_editor_absoluteY="40dp"/>
+            tools:layout_editor_absoluteY="40dp" />
     </LinearLayout>
 
 

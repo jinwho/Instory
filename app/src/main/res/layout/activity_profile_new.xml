@@ -89,6 +89,7 @@
             android:layout_height="wrap_content"
             android:isIndicator="false"
             android:numStars="5"
+            android:progressTint="@color/ColorButton"
             android:stepSize="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
