@@ -10,9 +10,10 @@ import java.util.Date;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 import static android.arch.persistence.room.ForeignKey.NO_ACTION;
+import static android.arch.persistence.room.ForeignKey.SET_NULL;
 
 
-@Entity(foreignKeys = @ForeignKey(entity = Band.class,parentColumns = "bid",childColumns = "bid",onDelete = NO_ACTION,onUpdate = CASCADE),
+@Entity(foreignKeys = @ForeignKey(entity = Band.class,parentColumns = "bid",childColumns = "bid",onDelete = SET_NULL, onUpdate = CASCADE),
         indices = {@Index("bid")})
 public class Profile {
     @PrimaryKey(autoGenerate = true)

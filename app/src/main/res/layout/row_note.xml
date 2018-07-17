@@ -8,7 +8,7 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginTop="8dp"
-    android:background="@drawable/memo_background"
+    android:background="@drawable/text_background"
     android:padding="8dp">
 
     <ImageView

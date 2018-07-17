@@ -115,7 +115,12 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
         //set profile view
         ratingBar.setRating(profile.getRating());
         name.setText(profile.getName());
-        comment.setText(profile.getComment());
+        String tComment = profile.getComment();
+        if (tComment.isEmpty()) {
+            comment.setVisibility(View.INVISIBLE);
+        } else {
+            comment.setText(tComment);
+        }
 
         //set note view
         noteAdapter = new NoteAdapter(this);

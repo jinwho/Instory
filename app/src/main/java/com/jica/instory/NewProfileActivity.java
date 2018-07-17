@@ -89,7 +89,8 @@ public class NewProfileActivity extends AppCompatActivity {
             comment.setText(profile.getComment());
             phone.setText(profile.getPhone());
             email.setText(profile.getEmail());
-            if(profile.getYear() != 0) birthday.setText(getString(R.string.calendar_format, profile.getYear(), profile.getMonth()+1, profile.getDay()));
+            if (profile.getYear() != 0)
+                birthday.setText(getString(R.string.calendar_format, profile.getYear(), profile.getMonth() + 1, profile.getDay()));
             address.setText(profile.getAddress());
 
             //수정할 때 이미지파일이 존재한다면 가져온다.
@@ -182,27 +183,28 @@ public class NewProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bitmap = null;
-        switch (requestCode) {
-            case REQUEST_IMAGE_CAPTURE:
-                if (resultCode == RESULT_OK) {
+        //이미지를 가져온 경우에만
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_IMAGE_CAPTURE:
                     Bundle extras = data.getExtras();
-                    bitmap = ThumbnailUtils.extractThumbnail((Bitmap) extras.get("data"), 100, 100);
-                }
-                break;
-            case SELECT_FROM_GALLERY:
-                if (resultCode == RESULT_OK) {
+                    if (extras != null) {
+                        bitmap = ThumbnailUtils.extractThumbnail((Bitmap) extras.get("data"), 100, 100);
+                    }
+                    break;
+                case SELECT_FROM_GALLERY:
                     Uri uri = data.getData();
                     try {
                         bitmap = ThumbnailUtils.extractThumbnail(MediaStore.Images.Media.getBitmap(getContentResolver(), uri), 100, 100);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
-                break;
+                    break;
+            }
+            photo_changed = true;
+            profile_photo = bitmap;
+            profile_pic.setImageBitmap(profile_photo);
         }
-        profile_photo = bitmap;
-        profile_pic.setImageBitmap(profile_photo);
-        photo_changed = true;
     }
 
     @Override

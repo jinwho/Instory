@@ -51,14 +51,14 @@
 
         <RatingBar
             android:id="@+id/ratingBar"
-            style="@style/Widget.AppCompat.RatingBar.Small"
+            style="@android:style/Widget.DeviceDefault.Light.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:isIndicator="true"
             android:numStars="5"
             android:stepSize="1"
             tools:layout_editor_absoluteX="98dp"
-            tools:layout_editor_absoluteY="40dp" />
+            tools:layout_editor_absoluteY="40dp"/>
     </LinearLayout>
 
 
@@ -69,10 +69,9 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="한줄평"
+        android:background="@drawable/text_background"
         android:textAlignment="center"
         android:textSize="14sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/linearlayout"
