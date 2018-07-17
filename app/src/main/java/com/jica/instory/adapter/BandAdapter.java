@@ -13,20 +13,25 @@ import com.jica.instory.R;
 import com.jica.instory.database.AppDatabase;
 import com.jica.instory.database.dao.BandDao;
 import com.jica.instory.database.entity.Band;
+import com.jica.instory.listener.OnGroupClickListener;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class BandAdapter extends RecyclerView.Adapter<BandAdapter.BandViewHolder> {
 
     public class BandViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView name;
-        private ImageView del;
+        @BindView(R.id.name)
+        TextView name;
+        @BindView(R.id.del)
+        ImageView del;
 
         private BandViewHolder(View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.name);
-            del = itemView.findViewById(R.id.del);
+            ButterKnife.bind(this, itemView);
         }
     }
 
@@ -34,10 +39,12 @@ public class BandAdapter extends RecyclerView.Adapter<BandAdapter.BandViewHolder
     private List<Band> bands;
     private final LayoutInflater mInflater;
     private BandDao bandDao;
+    private OnGroupClickListener groupClick;
 
-    public BandAdapter(Context context) {
+    public BandAdapter(Context context, OnGroupClickListener groupClick) {
         mInflater = LayoutInflater.from(context);
         bandDao = AppDatabase.getInstance(context).bandDao();
+        this.groupClick = groupClick;
     }
 
     public void setBands(List<Band> bands) {
@@ -61,6 +68,12 @@ public class BandAdapter extends RecyclerView.Adapter<BandAdapter.BandViewHolder
             bandDao.delete(bands.get(position));
             removeAt(position);
         });
+        if (groupClick != null){
+            holder.itemView.setOnClickListener(v -> {
+                groupClick.onGroupClick(band.getBid());
+            });
+        }
+
     }
 
     @Override

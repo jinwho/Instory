@@ -50,8 +50,12 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
     private NoteDao noteDao = AppDatabase.getInstance(this).noteDao();
     private List<Note> notes;
     private NoteAdapter noteAdapter;
+    //DB group
+    private BandDao bandDao = AppDatabase.getInstance(this).bandDao();
+    private Band band;
 
     private Intent intent;
+    final static int GROUP_SELECT_REQUEST = 100;
 
     //views
     @BindView(R.id.name)
@@ -85,6 +89,8 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
     @BindView(R.id.add_note)
     ImageView add_note;
 
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +105,12 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
         //DB 검색
         profile = profileDao.get(pid);
         notes = noteDao.ownBy(pid);
+
+        //
+        if (profile.getBid() != null){
+            band = bandDao.get(profile.getBid());
+            group.setText(band.getName());
+        }
 
         //set profile view
         ratingBar.setRating(profile.getRating());
@@ -146,16 +158,18 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
                         break;
                     //삭제
                     case 1:
-                        profileDao.delete(profile);
                         //혹시 프사가 있으면 프사도 삭제함.
-                        if (!profile.getFilename().isEmpty()) {
+                        if (profile.getFilename() != null) {
                             deleteFile(profile.getFilename());
                         }
+                        profileDao.delete(profile);
                         Toast.makeText(this, "프로필이 삭제 되었습니다.", Toast.LENGTH_SHORT).show();
                         finish();
                         break;
                     //그룹 선택
                     case 2:
+                        Intent intent = new Intent(this,GroupActivity.class);
+                        startActivityForResult(intent,GROUP_SELECT_REQUEST);
                         break;
                 }
             });
@@ -187,6 +201,22 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
             builder.setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.dismiss());
             builder.create().show();
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GROUP_SELECT_REQUEST) {
+            if (resultCode == -1){
+                //user exit seletion
+            }else {
+                //resultCode에 있는 bid를 받아와서, 로고텍스트를 바꾸고, 프로필 db의 bid를 업데이트 해준다.
+                band = bandDao.get(resultCode);
+                group.setText(band.getName());
+                profile.setBid(resultCode);
+                profileDao.update(profile);
+            }
+        }
     }
 
     //handle 4 image button clicks

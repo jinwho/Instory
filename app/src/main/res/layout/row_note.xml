@@ -25,8 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_toStartOf="@id/del"
         android:gravity="top|center_horizontal"
-        android:text="1990.07.20"
-        android:textStyle="bold|italic"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+        //overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         profileDao = AppDatabase.getInstance(this).profileDao();
         profileAdapter = new ProfileAdapter(this);
         recyclerView.setAdapter(profileAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this,LinearLayoutManager.VERTICAL));
+        //recyclerView.setHasFixedSize(true);//only for now
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
