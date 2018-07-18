@@ -41,7 +41,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
 
         ProfileViewHolder(View itemView) {
             super(itemView);
-            setIsRecyclable(false);
             ButterKnife.bind(this, itemView);
         }
     }
@@ -97,6 +96,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
                 context.startActivity(intent);
             });
         }
+        holder.setIsRecyclable(false);
     }
 
     @Override

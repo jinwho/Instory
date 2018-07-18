@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         profileAdapter = new ProfileAdapter(this);
         recyclerView.setAdapter(profileAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this,LinearLayoutManager.VERTICAL));
-        //recyclerView.setHasFixedSize(true);//only for now
+        recyclerView.setHasFixedSize(true);//only for now
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -59,4 +59,6 @@ public class MainActivity extends AppCompatActivity {
         //다른 액티비티에서 삭제나 추가가 이루어 지기 때문에 이 방법 말고는없다.
         profileAdapter.setProfiles(profileDao.getAllMinimal());
     }
+
+
 }

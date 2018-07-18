@@ -40,7 +40,7 @@
             android:layout_height="48dp"
             android:layout_gravity="end"
             android:gravity="center"
-            android:text="@string/menu_ok"
+            android:text="@android:string/ok"
             android:textColor="@color/ColorFont"
             android:textSize="12sp"
             tools:layout_editor_absoluteX="320dp"
@@ -73,7 +73,7 @@
         app:srcCompat="@drawable/sub_edit_camera" />
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/profileLayout"
         android:layout_width="264dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -84,7 +84,7 @@
 
         <RatingBar
             android:id="@+id/ratingBar"
-            style="@android:style/Widget.DeviceDefault.Light.RatingBar.Indicator"
+            style="@android:style/Widget.Holo.RatingBar.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:isIndicator="false"
@@ -134,7 +134,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/profileLayout">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/phone_layout"

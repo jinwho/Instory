@@ -3,6 +3,7 @@ package com.jica.instory;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -129,7 +130,6 @@ public class NewProfileActivity extends AppCompatActivity {
         profile.setEmail(email.getText().toString());
         profile.setAddress(address.getText().toString());
 
-
         //사진이 변경되었다면 저장한다.
         if (photo_changed) {
 
@@ -139,11 +139,9 @@ public class NewProfileActivity extends AppCompatActivity {
                 String filename = String.valueOf(Calendar.getInstance().getTimeInMillis());
                 profile.setFilename(filename);
             }
-
             //파일 저장함
             MyFileManager.getInstance().saveImage(profile_photo, this, profile.getFilename());
         }
-
         //pid는 수정시에만 존재한다(autoGenerate 때문에)
         if (profile.getPid() != null) {
             //업데이트
@@ -183,19 +181,20 @@ public class NewProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bitmap = null;
+        int THUMBSIZE = 128;
         //이미지를 가져온 경우에만
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_IMAGE_CAPTURE:
                     Bundle extras = data.getExtras();
                     if (extras != null) {
-                        bitmap = ThumbnailUtils.extractThumbnail((Bitmap) extras.get("data"), 100, 100);
+                        bitmap = ThumbnailUtils.extractThumbnail((Bitmap) extras.get("data"), THUMBSIZE, THUMBSIZE);
                     }
                     break;
                 case SELECT_FROM_GALLERY:
                     Uri uri = data.getData();
                     try {
-                        bitmap = ThumbnailUtils.extractThumbnail(MediaStore.Images.Media.getBitmap(getContentResolver(), uri), 100, 100);
+                        bitmap = ThumbnailUtils.extractThumbnail(MediaStore.Images.Media.getBitmap(getContentResolver(), uri), THUMBSIZE,  THUMBSIZE);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

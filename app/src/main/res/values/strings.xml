@@ -21,14 +21,13 @@
     <string name="menu_setting">설정</string>
     <string name="menu_edit">수정</string>
     <string name="menu_delete">삭제</string>
-    <string name="menu_ok">확인</string>
-    <string name="menu_cancel">취소</string>
 
     <!-- Dialog Messages-->
     <string name="photo_menu">사진을 어떻게 가져올까요?</string>
     <string name="take_photo">카메라로 사진 찍기</string>
     <string name="from_gallery">앨범에서 가져오기</string>
     <string name="choose_menu">무엇을 할까요?</string>
+    <string name="really_delete">정말로 삭제 할까요?</string>
     <string name="new_memo">새 메모</string>
     <string name="new_group">새 그룹</string>
 
