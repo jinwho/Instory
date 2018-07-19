@@ -6,8 +6,8 @@
     </string-array>
 
     <string-array name="view_menu">
+        <item>@string/menu_select_group</item>
         <item>@string/menu_edit</item>
         <item>@string/menu_delete</item>
-        <item>@string/menu_select_group</item>
     </string-array>
 </resources>

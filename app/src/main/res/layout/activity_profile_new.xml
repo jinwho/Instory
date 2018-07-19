@@ -40,7 +40,7 @@
             android:layout_height="48dp"
             android:layout_gravity="end"
             android:gravity="center"
-            android:text="@string/menu_ok"
+            android:text="@android:string/ok"
             android:textColor="@color/ColorFont"
             android:textSize="12sp"
             tools:layout_editor_absoluteX="320dp"
@@ -64,8 +64,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
+    <ImageView
+        android:id="@+id/camera"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_pic"
+        app:layout_constraintEnd_toEndOf="@+id/profile_pic"
+        app:srcCompat="@drawable/sub_edit_camera" />
+
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/profileLayout"
         android:layout_width="264dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -76,11 +84,12 @@
 
         <RatingBar
             android:id="@+id/ratingBar"
-            style="@style/Widget.AppCompat.RatingBar.Small"
+            style="@android:style/Widget.Holo.RatingBar.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:isIndicator="false"
             android:numStars="5"
+            android:progressTint="@color/ColorButton"
             android:stepSize="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -88,9 +97,8 @@
 
         <EditText
             android:id="@+id/name"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
             android:gravity="center"
             android:hint="@string/profile_name"
             android:inputType="textPersonName"
@@ -102,8 +110,9 @@
 
         <EditText
             android:id="@+id/comment"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="0dp"
+            android:background="@drawable/text_background"
             android:gravity="center"
             android:hint="@string/profile_comment"
             android:inputType="textLongMessage"
@@ -125,7 +134,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/profileLayout">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/phone_layout"
@@ -151,7 +160,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
-                android:layout_marginStart="32dp"
                 android:hint="@string/profile_phone"
                 android:inputType="phone"
                 android:singleLine="true"
@@ -187,7 +195,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
-                android:layout_marginStart="32dp"
                 android:hint="@string/profile_email"
                 android:inputType="textWebEmailAddress"
                 android:singleLine="true"
@@ -223,7 +230,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
-                android:layout_marginStart="32dp"
                 android:hint="@string/profile_birthday"
                 android:inputType="date"
                 android:singleLine="true"
@@ -260,16 +266,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
-                android:layout_marginStart="32dp"
                 android:hint="@string/profile_address"
+                android:inputType="text"
                 android:singleLine="true"
                 android:textAlignment="center"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/address_img"
-                app:layout_constraintTop_toTopOf="parent"
-                android:inputType="" />
+                app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>

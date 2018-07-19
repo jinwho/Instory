@@ -8,13 +8,14 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginTop="8dp"
-    android:background="@drawable/memo_background"
+    android:background="@drawable/text_background"
     android:padding="8dp">
 
     <ImageView
         android:id="@+id/del"
         android:layout_width="16dp"
         android:layout_height="16dp"
+        android:tint="@color/ColorButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_delete" />
@@ -25,8 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_toStartOf="@id/del"
         android:gravity="top|center_horizontal"
-        android:text="1990.07.20"
-        android:textStyle="bold|italic"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -41,7 +41,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
 
         ProfileViewHolder(View itemView) {
             super(itemView);
-            setIsRecyclable(false);
             ButterKnife.bind(this, itemView);
         }
     }
@@ -77,8 +76,13 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
             final ProfileMinimal profile = profiles.get(position);
             //프로필을 view 의 값으로 할당
             holder.name.setText(profile.getName());
-            holder.comment.setText(profile.getComment());
             holder.rating.setRating(profile.getRating());
+            String comment = profile.getComment();
+            if (comment.isEmpty()) {
+                holder.comment.setVisibility(View.INVISIBLE);
+            } else {
+                holder.comment.setText(comment);
+            }
 
             //사진이 있을 경우에만 보여준다.
             Bitmap bitmap = MyFileManager.getInstance().loadImage(context, profile.getFilename());
@@ -92,6 +96,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
                 context.startActivity(intent);
             });
         }
+        holder.setIsRecyclable(false);
     }
 
     @Override

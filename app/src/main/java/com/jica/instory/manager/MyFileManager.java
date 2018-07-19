@@ -27,7 +27,7 @@ public class MyFileManager {
     public boolean saveImage(Bitmap bitmap, Context context, String filename) {
         try {
             FileOutputStream outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, outputStream);
             outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();

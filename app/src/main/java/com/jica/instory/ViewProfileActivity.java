@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -50,8 +51,12 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
     private NoteDao noteDao = AppDatabase.getInstance(this).noteDao();
     private List<Note> notes;
     private NoteAdapter noteAdapter;
+    //DB group
+    private BandDao bandDao = AppDatabase.getInstance(this).bandDao();
+    private Band band;
 
     private Intent intent;
+    final static int GROUP_SELECT_REQUEST = 100;
 
     //views
     @BindView(R.id.name)
@@ -85,6 +90,7 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
     @BindView(R.id.add_note)
     ImageView add_note;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,10 +106,21 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
         profile = profileDao.get(pid);
         notes = noteDao.ownBy(pid);
 
+        //bid가 있으면 그룹이름을 보여줌
+        if (profile.getBid() != null) {
+            band = bandDao.get(profile.getBid());
+            group.setText(band.getName());
+        }
+
         //set profile view
         ratingBar.setRating(profile.getRating());
         name.setText(profile.getName());
-        comment.setText(profile.getComment());
+        String tComment = profile.getComment();
+        if (tComment.isEmpty()) {
+            comment.setVisibility(View.INVISIBLE);
+        } else {
+            comment.setText(tComment);
+        }
 
         //set note view
         noteAdapter = new NoteAdapter(this);
@@ -129,34 +146,38 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
 
         //buttons
         back.setOnClickListener(v -> onBackPressed());
-        group.setOnClickListener(v -> {
-            Toast.makeText(this, "Group Button Clicked", Toast.LENGTH_SHORT).show();
-        });
         menu.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.choose_menu);
             builder.setItems(R.array.view_menu, (dialog, which) -> {
                 switch (which) {
-                    //수정
+                    //그룹 선택
                     case 0:
+                        Intent intent = new Intent(this, GroupActivity.class);
+                        startActivityForResult(intent, GROUP_SELECT_REQUEST);
+                        break;
+                    //수정
+                    case 1:
                         intent = new Intent(getApplicationContext(), NewProfileActivity.class);
                         intent.putExtra("id", profile.getPid());
                         startActivity(intent);
                         finish();
                         break;
                     //삭제
-                    case 1:
-                        profileDao.delete(profile);
-                        //혹시 프사가 있으면 프사도 삭제함.
-                        if (!profile.getFilename().isEmpty()) {
-                            deleteFile(profile.getFilename());
-                        }
-                        Toast.makeText(this, "프로필이 삭제 되었습니다.", Toast.LENGTH_SHORT).show();
-                        finish();
-                        break;
-                    //그룹 선택
                     case 2:
-                        break;
+                        AlertDialog.Builder yon = new AlertDialog.Builder(this);
+                        yon.setTitle(R.string.really_delete);
+                        yon.setPositiveButton(android.R.string.yes, (dialog1, which1) -> {
+                            //혹시 프사가 있으면 프사도 삭제함.
+                            if (profile.getFilename() != null) {
+                                deleteFile(profile.getFilename());
+                            }
+                            profileDao.delete(profile);
+                            Toast.makeText(getApplicationContext(), "프로필이 삭제 되었습니다.", Toast.LENGTH_SHORT).show();
+                            finish();
+                        });
+                        yon.setNegativeButton(android.R.string.no, (dialog1, which1) -> dialog1.dismiss());
+                        yon.create().show();
                 }
             });
             builder.create().show();
@@ -189,6 +210,20 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GROUP_SELECT_REQUEST) {
+            if (resultCode != -1) {
+                //resultCode에 있는 bid를 받아와서, 로고텍스트를 바꾸고, 프로필 db의 bid를 업데이트 해준다.
+                band = bandDao.get(resultCode);
+                group.setText(band.getName());
+                profile.setBid(resultCode);
+                profileDao.update(profile);
+            }
+        }
+    }
+
     //handle 4 image button clicks
     @Override
     public void onClick(View v) {
@@ -217,7 +252,7 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
                     Calendar d_day = Calendar.getInstance();
                     d_day.setTimeInMillis(birthday.getTimeInMillis() - today.getTimeInMillis());
                     data = getString(R.string.calendar_format, profile.getYear(), profile.getMonth() + 1, profile.getDay());
-                    Toast.makeText(this, data + "\n" +"생일까지 "+ (d_day.get(Calendar.DAY_OF_YEAR) - 1) + "일", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, data + "\n" + "생일까지 " + (d_day.get(Calendar.DAY_OF_YEAR) - 1) + "일", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.address_img:

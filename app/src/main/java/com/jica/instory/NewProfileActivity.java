@@ -3,6 +3,7 @@ package com.jica.instory;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -89,7 +90,8 @@ public class NewProfileActivity extends AppCompatActivity {
             comment.setText(profile.getComment());
             phone.setText(profile.getPhone());
             email.setText(profile.getEmail());
-            if(profile.getYear() != 0) birthday.setText(getString(R.string.calendar_format, profile.getYear(), profile.getMonth()+1, profile.getDay()));
+            if (profile.getYear() != 0)
+                birthday.setText(getString(R.string.calendar_format, profile.getYear(), profile.getMonth() + 1, profile.getDay()));
             address.setText(profile.getAddress());
 
             //수정할 때 이미지파일이 존재한다면 가져온다.
@@ -128,7 +130,6 @@ public class NewProfileActivity extends AppCompatActivity {
         profile.setEmail(email.getText().toString());
         profile.setAddress(address.getText().toString());
 
-
         //사진이 변경되었다면 저장한다.
         if (photo_changed) {
 
@@ -138,11 +139,9 @@ public class NewProfileActivity extends AppCompatActivity {
                 String filename = String.valueOf(Calendar.getInstance().getTimeInMillis());
                 profile.setFilename(filename);
             }
-
             //파일 저장함
             MyFileManager.getInstance().saveImage(profile_photo, this, profile.getFilename());
         }
-
         //pid는 수정시에만 존재한다(autoGenerate 때문에)
         if (profile.getPid() != null) {
             //업데이트
@@ -182,27 +181,29 @@ public class NewProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bitmap = null;
-        switch (requestCode) {
-            case REQUEST_IMAGE_CAPTURE:
-                if (resultCode == RESULT_OK) {
+        int THUMBSIZE = 128;
+        //이미지를 가져온 경우에만
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_IMAGE_CAPTURE:
                     Bundle extras = data.getExtras();
-                    bitmap = ThumbnailUtils.extractThumbnail((Bitmap) extras.get("data"), 100, 100);
-                }
-                break;
-            case SELECT_FROM_GALLERY:
-                if (resultCode == RESULT_OK) {
+                    if (extras != null) {
+                        bitmap = ThumbnailUtils.extractThumbnail((Bitmap) extras.get("data"), THUMBSIZE, THUMBSIZE);
+                    }
+                    break;
+                case SELECT_FROM_GALLERY:
                     Uri uri = data.getData();
                     try {
-                        bitmap = ThumbnailUtils.extractThumbnail(MediaStore.Images.Media.getBitmap(getContentResolver(), uri), 100, 100);
+                        bitmap = ThumbnailUtils.extractThumbnail(MediaStore.Images.Media.getBitmap(getContentResolver(), uri), THUMBSIZE,  THUMBSIZE);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
-                break;
+                    break;
+            }
+            photo_changed = true;
+            profile_photo = bitmap;
+            profile_pic.setImageBitmap(profile_photo);
         }
-        profile_photo = bitmap;
-        profile_pic.setImageBitmap(profile_photo);
-        photo_changed = true;
     }
 
     @Override
