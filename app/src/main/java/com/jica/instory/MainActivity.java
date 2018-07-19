@@ -1,6 +1,7 @@
 package com.jica.instory;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         UpdateList();
+        //new UpdateListTask().execute();
     }
 
     private void UpdateList() {
@@ -106,12 +108,11 @@ public class MainActivity extends AppCompatActivity {
         //Add your adapter to the sectionAdapter
         SimpleSectionedRecyclerViewAdapter.Section[] dummy = new SimpleSectionedRecyclerViewAdapter.Section[sections.size()];
         SimpleSectionedRecyclerViewAdapter mSectionedAdapter =
-                new SimpleSectionedRecyclerViewAdapter(this, R.layout.row_profile_group,R.id.name, profileAdapter);
+                new SimpleSectionedRecyclerViewAdapter(this, R.layout.row_main_group,R.id.name, profileAdapter);
         mSectionedAdapter.setSections(sections.toArray(dummy));
 
         //Apply this adapter to the RecyclerView
         recyclerView.setAdapter(mSectionedAdapter);
 
     }
-
 }

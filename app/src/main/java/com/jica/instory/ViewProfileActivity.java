@@ -1,12 +1,7 @@
 package com.jica.instory;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,7 +9,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,17 +20,13 @@ import com.jica.instory.adapter.NoteAdapter;
 import com.jica.instory.database.AppDatabase;
 import com.jica.instory.database.dao.BandDao;
 import com.jica.instory.database.dao.NoteDao;
+import com.jica.instory.database.dao.ProfileDao;
 import com.jica.instory.database.entity.Band;
 import com.jica.instory.database.entity.Note;
 import com.jica.instory.database.entity.Profile;
-import com.jica.instory.database.dao.ProfileDao;
 import com.jica.instory.manager.MyFileManager;
 
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -107,8 +97,9 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
         notes = noteDao.ownBy(pid);
 
         //bid가 있으면 그룹이름을 보여줌
-        if (profile.getBid() != null) {
-            band = bandDao.get(profile.getBid());
+        Integer bid = profile.getBid();
+        if (bid != null) {
+            band = bandDao.get(bid);
             group.setText(band.getName());
         }
 
@@ -138,7 +129,7 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
         birthday.setOnClickListener(this);
         address.setOnClickListener(this);
 
-        //if data is empty then make it invisible
+        //if data is empty then make it gone
         if (profile.getPhone().isEmpty()) phone.setVisibility(View.GONE);
         if (profile.getEmail().isEmpty()) email.setVisibility(View.GONE);
         if (profile.getYear() == 0) birthday.setVisibility(View.GONE);
@@ -165,9 +156,9 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
                         break;
                     //삭제
                     case 2:
-                        AlertDialog.Builder yon = new AlertDialog.Builder(this);
-                        yon.setTitle(R.string.really_delete);
-                        yon.setPositiveButton(android.R.string.yes, (dialog1, which1) -> {
+                        AlertDialog.Builder YorN = new AlertDialog.Builder(this);
+                        YorN.setTitle(R.string.really_delete);
+                        YorN.setPositiveButton(android.R.string.yes, (sub_dialog, sub_which) -> {
                             //혹시 프사가 있으면 프사도 삭제함.
                             if (profile.getFilename() != null) {
                                 deleteFile(profile.getFilename());
@@ -176,8 +167,8 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
                             Toast.makeText(getApplicationContext(), "프로필이 삭제 되었습니다.", Toast.LENGTH_SHORT).show();
                             finish();
                         });
-                        yon.setNegativeButton(android.R.string.no, (dialog1, which1) -> dialog1.dismiss());
-                        yon.create().show();
+                        YorN.setNegativeButton(android.R.string.no, (sub_dialog, sub_which) -> sub_dialog.dismiss());
+                        YorN.create().show();
                 }
             });
             builder.create().show();
