@@ -69,6 +69,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         holder.date.setText(note.getDate());
         holder.contents.setText(note.getContent());
         holder.del.setOnClickListener(v -> {
+            //DB 속도 때문에 빨리 누르면 에러 남
             noteDao.delete(note);
             removeAt(position);
         });

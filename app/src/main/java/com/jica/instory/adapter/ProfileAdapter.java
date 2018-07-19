@@ -26,7 +26,6 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileViewHolder> {
-
     //View Holder
     class ProfileViewHolder extends RecyclerView.ViewHolder {
 
@@ -78,6 +77,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
             holder.name.setText(profile.getName());
             holder.rating.setRating(profile.getRating());
             String comment = profile.getComment();
+
             if (comment.isEmpty()) {
                 holder.comment.setVisibility(View.INVISIBLE);
             } else {

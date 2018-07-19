@@ -48,6 +48,7 @@ public class GroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group);
         ButterKnife.bind(this);
         rv.setLayoutManager(new LinearLayoutManager(this));
+        rv.setHasFixedSize(true);
 
 
         // 여기서는 클릭한 그룹 bid를 인텐트에 넣고  를 통해 결과를 반환 한다.

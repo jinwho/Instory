@@ -8,9 +8,8 @@ public class Band {
     @PrimaryKey(autoGenerate = true)
     private Integer bid;
 
-
+    //have to set unique
     private String name;
-
 
     //getters, setters
 
