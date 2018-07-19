@@ -1,7 +1,6 @@
 package com.jica.instory;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -58,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         profileDao = AppDatabase.getInstance(this).profileDao();
         bandDao = AppDatabase.getInstance(this).bandDao();
 
-        //
         profileAdapter = new ProfileAdapter(this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -71,8 +69,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         UpdateList();
-        //new UpdateListTask().execute();
     }
+    /*
+    @Override
+    protected void onResume() {
+        super.onResume();
+        UpdateList();
+    }*/
 
     private void UpdateList() {
 
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         List<SimpleSectionedRecyclerViewAdapter.Section> sections = new ArrayList<>();
         List<ProfileMinimal> profiles = new ArrayList<>();
         int totalSize = 0;
+
 
         //그룹이 있는 프로필들
         List<Band> bands = bandDao.getAll();
@@ -91,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (band == null) {
                 bandprofiles = profileDao.getAllMinimal(null);
-                bandname = "전 체";
+                bandname = "전체";
             } else {
                 bandprofiles = profileDao.getAllMinimal(band.getBid());
                 bandname = band.getName();

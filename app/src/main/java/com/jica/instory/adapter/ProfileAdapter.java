@@ -3,6 +3,7 @@ package com.jica.instory.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -80,7 +81,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
             } else {
                 holder.comment.setText(comment);
             }
-
             //사진이 있을 경우에만 보여준다.
             Bitmap bitmap = MyFileManager.getInstance().loadImage(context, profile.getFilename());
             if (bitmap != null) holder.profile_pic.setImageBitmap(bitmap);
@@ -96,10 +96,12 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
         holder.setIsRecyclable(false);
     }
 
+
     @Override
     public int getItemCount() {
         if (profiles != null)
             return profiles.size();
         else return 0;
     }
+
 }
