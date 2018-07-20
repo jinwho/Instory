@@ -45,7 +45,6 @@
             android:layout_height="wrap_content"
             android:textAllCaps="false"
             android:textSize="15sp"
-            android:textStyle="bold"
             tools:layout_editor_absoluteX="137dp"
             tools:layout_editor_absoluteY="18dp" />
 

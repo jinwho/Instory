@@ -3,7 +3,5 @@
     <color name="ColorFont">#516673</color>
     <color name="ColorButton">#8fd9d9</color>
     <color name="ColorIcon">#3fbfbf</color>
-
-    <color name="bg_color">#fff5f5f5</color>
-    <color name="grey">#96969696</color>
+    <color name="ColorSkyBlue">#e9f7f7</color>
 </resources>

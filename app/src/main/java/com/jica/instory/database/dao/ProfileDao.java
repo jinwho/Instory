@@ -31,6 +31,9 @@ public interface ProfileDao{
     @Query("SELECT pid, rating, name, comment,filename FROM profile")
     List<ProfileMinimal> getAllMinimal();
 
+    @Query("SELECT pid, rating, name, comment,filename FROM profile WHERE bid IS :bid")
+    List<ProfileMinimal> getAllMinimal(Integer bid);
+
     //삽입
     @Insert
     void insert(Profile data);
