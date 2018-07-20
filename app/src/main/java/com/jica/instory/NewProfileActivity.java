@@ -3,14 +3,12 @@ package com.jica.instory;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -33,10 +31,6 @@ public class NewProfileActivity extends AppCompatActivity {
     //DB
     private ProfileDao profileDao = AppDatabase.getInstance(this).profileDao();
     private Profile profile;
-
-    //request code
-    static final int REQUEST_IMAGE_CAPTURE = 0;
-    static final int SELECT_FROM_GALLERY = 1;
 
     //사진 데이터
     private Bitmap profile_photo = null;
@@ -72,7 +66,6 @@ public class NewProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         overridePendingTransition(R.anim.enter, R.anim.exit);
         setContentView(R.layout.activity_profile_new);
         ButterKnife.bind(this);
@@ -80,11 +73,14 @@ public class NewProfileActivity extends AppCompatActivity {
         //수정하기 위해 호출되었다면 id를 얻어 프로필 객체를 불러온다.
         Intent intent = getIntent();
         if (intent.hasExtra("id")) {
-            Integer id = intent.getIntExtra("id", -1);
-            profile = profileDao.get(id);
             //"프로필 추가" -> "프로필 수정"
             logo_text.setText(R.string.profile_edit);
-            //set view
+
+            //프로필 가져오기
+            Integer id = intent.getIntExtra("id", -1);
+            profile = profileDao.get(id);
+
+            //프로필 view 세팅
             ratingBar.setRating(profile.getRating());
             name.setText(profile.getName());
             comment.setText(profile.getComment());
@@ -94,30 +90,23 @@ public class NewProfileActivity extends AppCompatActivity {
                 birthday.setText(getString(R.string.calendar_format, profile.getYear(), profile.getMonth() + 1, profile.getDay()));
             address.setText(profile.getAddress());
 
-            //수정할 때 이미지파일이 존재한다면 가져온다.
+            //이미지파일이 존재한다면 가져온다.
             Bitmap bitmap = MyFileManager.getInstance().loadImage(this, profile.getFilename());
             if (bitmap != null) profile_pic.setImageBitmap(bitmap);
 
         } else {
+            //수정 모드가 아니라면 새 프로필 생성
             profile = new Profile();
         }
 
-        back.setOnClickListener(v -> onBackPressed());
-        ok.setOnClickListener(v -> SaveProfile());
-        birthday.setOnClickListener(v -> {
-            final Calendar c = Calendar.getInstance();
-            int mYear = c.get(Calendar.YEAR);
-            int mMonth = c.get(Calendar.MONTH);
-            int mDay = c.get(Calendar.DAY_OF_MONTH);
-            DatePickerDialog dpd = new DatePickerDialog(NewProfileActivity.this,
-                    (view, year, monthOfYear, dayOfMonth) -> {
-                        birthday.setText(getString(R.string.calendar_format, year, monthOfYear + 1, dayOfMonth));
-                        profile.setYear(year);
-                        profile.setMonth(monthOfYear);
-                        profile.setDay(dayOfMonth);
-                    }, mYear, mMonth, mDay);
-            dpd.show();
+        //버튼 리스너
+        back.setOnClickListener(v -> {
+            setResult(RESULT_CANCELED);
+            onBackPressed();
         });
+        profile_pic.setOnClickListener(v -> takePhoto());
+        birthday.setOnClickListener(v -> SetCalendar());
+        ok.setOnClickListener(v -> SaveProfile());
     }
 
     //저장 버튼 클릭
@@ -152,11 +141,30 @@ public class NewProfileActivity extends AppCompatActivity {
             profileDao.insert(profile);
             Toast.makeText(this, "프로필이 저장 되었습니다.", Toast.LENGTH_SHORT).show();
         }
+        // 메인에서 호출되었으면 프로필이 생성 된 것
+        // 프로필뷰에서 호출되었으면 업데이트 되었음
+        setResult(RESULT_OK);
         onBackPressed();
     }
 
+    //생일 텍스트뷰 클릭
+    void SetCalendar() {
+        final Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog dpd = new DatePickerDialog(NewProfileActivity.this,
+                (view, year, monthOfYear, dayOfMonth) -> {
+                    birthday.setText(getString(R.string.calendar_format, year, monthOfYear + 1, dayOfMonth));
+                    profile.setYear(year);
+                    profile.setMonth(monthOfYear);
+                    profile.setDay(dayOfMonth);
+                }, mYear, mMonth, mDay);
+        dpd.show();
+    }
+
     //사진공간이 클릭 되었을 때
-    public void onClickPhoto(View view) {
+    public void takePhoto() {
         AlertDialog.Builder builder = new AlertDialog.Builder(NewProfileActivity.this);
         builder.setTitle(R.string.photo_menu).setItems(R.array.photo_choice, (dialog, which) -> {
             Intent intent;
@@ -164,12 +172,12 @@ public class NewProfileActivity extends AppCompatActivity {
                 //카메라
                 case 0:
                     intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+                    startActivityForResult(intent, Constants.REQUEST_IMAGE_CAPTURE);
                     break;
                 //갤러리
                 case 1:
                     intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, SELECT_FROM_GALLERY);
+                    startActivityForResult(intent, Constants.SELECT_FROM_GALLERY);
                     break;
             }
         });
@@ -181,20 +189,20 @@ public class NewProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bitmap = null;
-        int THUMBSIZE = 128;
+        int THUMBSIZE = 256;
         //이미지를 가져온 경우에만
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case REQUEST_IMAGE_CAPTURE:
+                case Constants.REQUEST_IMAGE_CAPTURE:
                     Bundle extras = data.getExtras();
                     if (extras != null) {
                         bitmap = ThumbnailUtils.extractThumbnail((Bitmap) extras.get("data"), THUMBSIZE, THUMBSIZE);
                     }
                     break;
-                case SELECT_FROM_GALLERY:
+                case Constants.SELECT_FROM_GALLERY:
                     Uri uri = data.getData();
                     try {
-                        bitmap = ThumbnailUtils.extractThumbnail(MediaStore.Images.Media.getBitmap(getContentResolver(), uri), THUMBSIZE,  THUMBSIZE);
+                        bitmap = ThumbnailUtils.extractThumbnail(MediaStore.Images.Media.getBitmap(getContentResolver(), uri), THUMBSIZE, THUMBSIZE);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

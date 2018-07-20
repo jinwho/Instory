@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        //메뉴버튼 클릭시 어차피 설정화면 없으니까 그룹 화면으로
+        //메뉴버튼 클릭시 그룹 관리 화면으로
         main_menu.setOnClickListener(v -> {
             Intent intent = new Intent(this, GroupActivity.class);
             startActivity(intent);
@@ -64,18 +64,11 @@ public class MainActivity extends AppCompatActivity {
         //recyclerView.setAdapter(profileAdapter);
     }
 
-    //when visible -> update view
     @Override
     protected void onStart() {
         super.onStart();
         UpdateList();
     }
-    /*
-    @Override
-    protected void onResume() {
-        super.onResume();
-        UpdateList();
-    }*/
 
     private void UpdateList() {
 
@@ -83,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         List<SimpleSectionedRecyclerViewAdapter.Section> sections = new ArrayList<>();
         List<ProfileMinimal> profiles = new ArrayList<>();
         int totalSize = 0;
-
 
         //그룹이 있는 프로필들
         List<Band> bands = bandDao.getAll();
