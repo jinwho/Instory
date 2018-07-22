@@ -11,9 +11,8 @@ Android Profile Manager and Memo
 
 # 실행 화면
 <img width="360" height="640" src="https://github.com/jinwho/Instory/blob/master/sample_images/splash.png">
-![splash](https://github.com/jinwho/Instory/blob/master/sample_images/splash.png)
-<img width="360" height="640">![main](https://github.com/jinwho/Instory/blob/master/sample_images/main.png)
-<img width="360" height="640">![new1](https://github.com/jinwho/Instory/blob/master/sample_images/new1.png)
-<img width="360" height="640">![new2](https://github.com/jinwho/Instory/blob/master/sample_images/new2.png)
-<img width="360" height="640">![view](https://github.com/jinwho/Instory/blob/master/sample_images/view.png)
-<img width="360" height="640">![group](https://github.com/jinwho/Instory/blob/master/sample_images/group.png)
+<img width="360" height="640" src="https://github.com/jinwho/Instory/blob/master/sample_images/main.png">
+<img width="360" height="640" src="https://github.com/jinwho/Instory/blob/master/sample_images/new1.png">
+<img width="360" height="640" src="https://github.com/jinwho/Instory/blob/master/sample_images/new2.png">
+<img width="360" height="640" src="https://github.com/jinwho/Instory/blob/master/sample_images/view.png">
+<img width="360" height="640" src="https://github.com/jinwho/Instory/blob/master/sample_images/group.png">
