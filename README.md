@@ -1,11 +1,6 @@
 # Instory
 Android Profile Manager and Memo
 
-# 프로젝트 - 마이피플
-* 소개 : jica (전주정보문화산업진흥원) 에서 만든 앱
-* 참여 인원 : 디자이너 2명, 프로그래머 1명(자신)
-* 개발 기간 : 1달(2018 6월~7월)
-
 # 앱 소개
 * 사람들과 이야기를 담을 수 있는 감성 앱
 * [실행 파일](https://github.com/jinwho/Instory/raw/master/app-debug.apk)
