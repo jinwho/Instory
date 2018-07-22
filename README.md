@@ -10,15 +10,10 @@ Android Profile Manager and Memo
 * 사람들과 있었던 이야기를 담을 수 있는 감성 앱
 
 # 실행 화면
-* 스플래시 화면
-![splash](https://github.com/jinwho/Instory/blob/master/sample_images/splash.png)
-* 메인 화면
-![main](https://github.com/jinwho/Instory/blob/master/sample_images/main.png)
-* 추가 화면
-![new1](https://github.com/jinwho/Instory/blob/master/sample_images/new1.png)
-* 추가 화면
-![new2](https://github.com/jinwho/Instory/blob/master/sample_images/new2.png)
-* 프로필 화면
-![view](https://github.com/jinwho/Instory/blob/master/sample_images/view.png)
-* 그룹 화면
-![group](https://github.com/jinwho/Instory/blob/master/sample_images/group.png)
+<img width="360" height="640">![splash](https://github.com/jinwho/Instory/blob/master/sample_images/splash.png)</img>
+<img width="360" height="640">![main](https://github.com/jinwho/Instory/blob/master/sample_images/main.png)</img>
+<img width="360" height="640">![new1](https://github.com/jinwho/Instory/blob/master/sample_images/new1.png)</img>
+<img width="360" height="640">![new2](https://github.com/jinwho/Instory/blob/master/sample_images/new2.png)</img>
+<img width="360" height="640">![view](https://github.com/jinwho/Instory/blob/master/sample_images/view.png)</img>
+<img width="360" height="640">![group](https://github.com/jinwho/Instory/blob/master/sample_images/group.png)</img>
+
