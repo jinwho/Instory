@@ -34,19 +34,14 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ViewProfileActivity extends AppCompatActivity implements View.OnClickListener {
-    //DB profile
+    //DB
     private ProfileDao profileDao = AppDatabase.getInstance(this).profileDao();
-    private Profile profile;
-    //DB note
     private NoteDao noteDao = AppDatabase.getInstance(this).noteDao();
-    private List<Note> notes;
-    private NoteAdapter noteAdapter;
-    //DB group
     private BandDao bandDao = AppDatabase.getInstance(this).bandDao();
+    private NoteAdapter noteAdapter;
+    private List<Note> notes;
+    private Profile profile;
     private Band band;
-
-    private Intent intent;
-    final static int GROUP_SELECT_REQUEST = 100;
 
     //views
     @BindView(R.id.name)
@@ -57,6 +52,8 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
     RatingBar ratingBar;
     @BindView(R.id.profile_pic)
     CircleImageView profile_pic;
+
+    //note list
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
@@ -84,13 +81,12 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         overridePendingTransition(R.anim.enter, R.anim.exit);
         setContentView(R.layout.activity_profile_view);
         ButterKnife.bind(this);
 
-        intent = getIntent();
-        Integer pid = intent.getIntExtra("id", -1);
+        //반드시 id를 보내온다.
+        Integer pid = getIntent().getIntExtra("id", 0);
 
         //DB 검색
         profile = profileDao.get(pid);
@@ -103,7 +99,7 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
             group.setText(band.getName());
         }
 
-        //set profile view
+        //view를 프로필 값으로 채움
         ratingBar.setRating(profile.getRating());
         name.setText(profile.getName());
         String tComment = profile.getComment();
@@ -112,6 +108,9 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
         } else {
             comment.setText(tComment);
         }
+        //파일이름이 존재하면 파일을 읽어와서 보여준다.
+        Bitmap bitmap = MyFileManager.getInstance().loadImage(this, profile.getFilename());
+        if (bitmap != null) profile_pic.setImageBitmap(bitmap);
 
         //set note view
         noteAdapter = new NoteAdapter(this);
@@ -119,108 +118,52 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
         recyclerView.setAdapter(noteAdapter);
         noteAdapter.setNotes(notes);
 
-        //get photo from profile file name, and set pic only if it's exist
-        Bitmap bitmap = MyFileManager.getInstance().loadImage(this, profile.getFilename());
-        if (bitmap != null) profile_pic.setImageBitmap(bitmap);
-
-        //set click listeners
-        phone.setOnClickListener(this);
-        email.setOnClickListener(this);
-        birthday.setOnClickListener(this);
-        address.setOnClickListener(this);
-
-        //if data is empty then make it gone
+        //버튼 클릭 리스너 할당
+        menu.setOnClickListener(this);
+        add_note.setOnClickListener(this);
+        back.setOnClickListener(v -> {
+            setResult(RESULT_CANCELED);
+            onBackPressed();
+        });
+        //프로필 데이터가 없으면 버튼을 사라지게 한다.
+        //데이터가 있는 경우에만 클릭을 허용한다.
         if (profile.getPhone().isEmpty()) phone.setVisibility(View.GONE);
+        else phone.setOnClickListener(this);
         if (profile.getEmail().isEmpty()) email.setVisibility(View.GONE);
+        else email.setOnClickListener(this);
         if (profile.getYear() == 0) birthday.setVisibility(View.GONE);
+        else birthday.setOnClickListener(this);
         if (profile.getAddress().isEmpty()) address.setVisibility(View.GONE);
+        else address.setOnClickListener(this);
 
-        //buttons
-        back.setOnClickListener(v -> onBackPressed());
-        menu.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.choose_menu);
-            builder.setItems(R.array.view_menu, (dialog, which) -> {
-                switch (which) {
-                    //그룹 선택
-                    case 0:
-                        Intent intent = new Intent(this, GroupActivity.class);
-                        startActivityForResult(intent, GROUP_SELECT_REQUEST);
-                        break;
-                    //수정
-                    case 1:
-                        intent = new Intent(getApplicationContext(), NewProfileActivity.class);
-                        intent.putExtra("id", profile.getPid());
-                        startActivity(intent);
-                        finish();
-                        break;
-                    //삭제
-                    case 2:
-                        AlertDialog.Builder YorN = new AlertDialog.Builder(this);
-                        YorN.setTitle(R.string.really_delete);
-                        YorN.setPositiveButton(android.R.string.yes, (sub_dialog, sub_which) -> {
-                            //혹시 프사가 있으면 프사도 삭제함.
-                            if (profile.getFilename() != null) {
-                                deleteFile(profile.getFilename());
-                            }
-                            profileDao.delete(profile);
-                            Toast.makeText(getApplicationContext(), "프로필이 삭제 되었습니다.", Toast.LENGTH_SHORT).show();
-                            finish();
-                        });
-                        YorN.setNegativeButton(android.R.string.no, (sub_dialog, sub_which) -> sub_dialog.dismiss());
-                        YorN.create().show();
-                }
-            });
-            builder.create().show();
-        });
-
-
-        add_note.setOnClickListener(view -> {
-            Note note = new Note();
-            note.setPid(profile.getPid());
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.new_memo);
-
-            final EditText contents = new EditText(this);
-            contents.setHint(R.string.note_contents);
-
-            builder.setView(contents);
-
-            builder.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> {
-                Calendar calendar = Calendar.getInstance();
-                String today = getString(R.string.calendar_format, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
-                note.setDate(today);
-                note.setContent(contents.getText().toString());
-                note.setNid((int) noteDao.insert(note));
-                notes.add(note);
-                noteAdapter.notifyItemInserted(noteAdapter.getItemCount());
-            });
-            builder.setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.dismiss());
-            builder.create().show();
-        });
     }
 
+    //그룹이 변경되었을 경우를 감지 한다.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GROUP_SELECT_REQUEST) {
-            if (resultCode != -1) {
-                //resultCode에 있는 bid를 받아와서, 로고텍스트를 바꾸고, 프로필 db의 bid를 업데이트 해준다.
-                band = bandDao.get(resultCode);
-                group.setText(band.getName());
-                profile.setBid(resultCode);
-                profileDao.update(profile);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case Constants.GROUP_SELECT_REQUEST:
+                    //그룹 선택모드에서 bid를 받아, 로고텍스트를 바꾸고, 프로필 db의 bid를 업데이트 해준다.
+                    Integer bid = data.getIntExtra("bid", 0);
+                    band = bandDao.get(bid);
+                    group.setText(band.getName());
+                    profile.setBid(bid);
+                    profileDao.update(profile);
+                    break;
             }
         }
     }
 
-    //handle 4 image button clicks
+    //button handler
     @Override
     public void onClick(View v) {
         String data;
         switch (v.getId()) {
+
             case R.id.phone_img:
+                //전화를 건다.
                 data = profile.getPhone();
                 if (!data.isEmpty()) {
                     Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + data));
@@ -228,6 +171,7 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
                 }
                 break;
             case R.id.email_img:
+                //이메일을 보낸다.
                 data = profile.getEmail();
                 if (!data.isEmpty()) {
                     Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + data));
@@ -235,8 +179,8 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
                 }
                 break;
             case R.id.birthday_img:
+                //오늘 날짜와 생일을 비교해서 남은 일을 알려준다.
                 if (profile.getYear() != 0) {
-                    //오늘 날짜를 생일과 비교해서 남은 일을 알려준다.
                     Calendar today = Calendar.getInstance();
                     Calendar birthday = Calendar.getInstance();
                     birthday.set(today.get(Calendar.YEAR), profile.getMonth(), profile.getDay());
@@ -247,11 +191,73 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
                 }
                 break;
             case R.id.address_img:
+                //집주소를 맵 어플리케이션으로 검색해준다.
                 data = profile.getAddress();
                 if (!data.isEmpty()) {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + data));
                     startActivity(intent);
                 }
+                break;
+            case R.id.menu:
+                //오른쪽 상단 메뉴 클릭시
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.choose_menu);
+                builder.setItems(R.array.view_menu, (dialog, which) -> {
+                    switch (which) {
+                        //그룹
+                        case 0:
+                            Intent intent = new Intent(this, GroupActivity.class);
+                            startActivityForResult(intent, Constants.GROUP_SELECT_REQUEST);
+                            break;
+                        //프로필 수정 모드, 부가적 데이터를 보냄
+                        case 1:
+                            intent = new Intent(getApplicationContext(), NewProfileActivity.class);
+                            intent.putExtra("id", profile.getPid());
+                            startActivity(intent);
+                            finish();
+                            break;
+                        //삭제할지 물어본다.
+                        case 2:
+                            AlertDialog.Builder YorN = new AlertDialog.Builder(this);
+                            YorN.setTitle(R.string.really_delete);
+                            YorN.setPositiveButton(android.R.string.yes, (sub_dialog, sub_which) -> {
+                                //혹시 사진이 있으면 사진도 삭제함.
+                                if (profile.getFilename() != null) {
+                                    deleteFile(profile.getFilename());
+                                }
+                                profileDao.delete(profile);
+                                Toast.makeText(getApplicationContext(), "프로필이 삭제 되었습니다.", Toast.LENGTH_SHORT).show();
+                                finish();
+                            });
+                            YorN.setNegativeButton(android.R.string.no, (sub_dialog, sub_which) -> sub_dialog.dismiss());
+                            YorN.create().show();
+                    }
+                });
+                builder.create().show();
+                break;
+            case R.id.add_note:
+                Note note = new Note();
+                note.setPid(profile.getPid());
+
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+                builder2.setTitle(R.string.new_memo);
+
+                final EditText contents = new EditText(this);
+                contents.setHint(R.string.note_contents);
+
+                builder2.setView(contents);
+
+                builder2.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> {
+                    Calendar calendar = Calendar.getInstance();
+                    String today = getString(R.string.calendar_format, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+                    note.setDate(today);
+                    note.setContent(contents.getText().toString());
+                    note.setNid((int) noteDao.insert(note));
+                    notes.add(note);
+                    noteAdapter.notifyItemInserted(noteAdapter.getItemCount());
+                });
+                builder2.setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.dismiss());
+                builder2.create().show();
                 break;
         }
     }

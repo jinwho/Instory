@@ -36,12 +36,11 @@
     <include layout="@layout/border_bottom"/>
 
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/profile_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="1dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
