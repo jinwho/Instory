@@ -7,7 +7,7 @@ Android Profile Manager and Memo
 * 개발 기간 : 1달(6월~7월)
 
 # 앱 소개
-* 사람들과 있었던 이야기를 담을 수 있는 감성 앱
+* 사람들과 이야기를 담을 수 있는 감성 앱
 
 # 실행 화면
 <img width="360" height="640" src="https://github.com/jinwho/Instory/blob/master/sample_images/splash.png">
