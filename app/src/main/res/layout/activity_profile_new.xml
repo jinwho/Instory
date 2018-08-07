@@ -6,11 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".NewProfileActivity">
 
-
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/default_toolbar_height"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:elevation="@dimen/default_elevation"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
@@ -19,6 +22,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="start"
+            android:contentDescription="@string/content_description"
             app:srcCompat="@drawable/back_arrow"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="15dp" />
@@ -47,10 +51,7 @@
             tools:layout_editor_absoluteY="4dp" />
 
 
-
     </android.support.v7.widget.Toolbar>
-
-    <include layout="@layout/border_bottom"/>
 
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -67,6 +68,7 @@
         android:id="@+id/camera"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:contentDescription="@string/content_description"
         app:layout_constraintBottom_toBottomOf="@+id/profile_pic"
         app:layout_constraintEnd_toEndOf="@+id/profile_pic"
         app:srcCompat="@drawable/sub_edit_camera" />
@@ -149,6 +151,7 @@
                 android:id="@+id/phone_img"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:contentDescription="@string/content_description"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -184,6 +187,7 @@
                 android:id="@+id/email_img"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:contentDescription="@string/content_description"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -219,6 +223,7 @@
                 android:id="@+id/birthday_img"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:contentDescription="@string/content_description"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -230,7 +235,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
                 android:hint="@string/profile_birthday"
-                android:inputType="date"
                 android:singleLine="true"
                 android:textAlignment="center"
                 android:textSize="12sp"
@@ -255,6 +259,7 @@
                 android:id="@+id/address_img"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:contentDescription="@string/content_description"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

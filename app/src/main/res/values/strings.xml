@@ -12,12 +12,10 @@
     <string name="profile_birthday">생일</string>
 
     <!-- Note -->
-    <string name="note_title">제목</string>
     <string name="note_contents">내용</string>
 
     <!-- Menu -->
     <string name="menu_group">그룹</string>
-    <string name="menu_select_group">그룹 선택</string>
     <string name="menu_setting">설정</string>
     <string name="menu_edit">수정</string>
     <string name="menu_delete">삭제</string>
@@ -32,6 +30,8 @@
     <string name="new_group">새 그룹</string>
 
     <!-- Logo text -->
+    <string name="group_manage">그룹 관리</string>
+    <string name="group_select">그룹 선택</string>
     <string name="profile_add">프로필 추가</string>
     <string name="profile_edit">프로필 수정</string>
 
@@ -39,5 +39,8 @@
     <string name="add_group">그룹추가</string>
 
     <!-- text format -->
-    <string name="calendar_format">%1$d.%2$d.%3$d</string>
+    <string name="calendar_format">%1$d-%2$d-%3$d</string>
+
+
+    <string name="content_description">ImageView</string>
 </resources>

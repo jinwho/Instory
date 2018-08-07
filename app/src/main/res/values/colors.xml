@@ -4,4 +4,6 @@
     <color name="ColorButton">#8fd9d9</color>
     <color name="ColorIcon">#3fbfbf</color>
     <color name="ColorSkyBlue">#e9f7f7</color>
+
+    <color name="icon_background">#3FBFBF</color>
 </resources>

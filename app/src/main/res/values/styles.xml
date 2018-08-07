@@ -1,13 +1,23 @@
 <resources>
 
     <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
-    <style name="Splash_Screen">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
+        <!-- Fixing the error -->
+        <item name="floatingActionButtonStyle">@style/Widget.Design.FloatingActionButton</item>
+
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+
+    </style>
+
+    <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+
+    <!-- transition animation -->
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
 </resources>

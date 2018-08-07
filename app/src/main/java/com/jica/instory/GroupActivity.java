@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jica.instory.adapter.BandAdapter;
 import com.jica.instory.database.AppDatabase;
@@ -55,7 +54,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         //그룹 선택 모드
         if (getCallingActivity() != null) {
             //로고 텍스트를 "그룹관리" 에서 "그룹선택" 으로 바꾸기
-            logo_text.setText(R.string.menu_select_group);
+            logo_text.setText(R.string.group_select);
             // 어댑터에서 그룹을 클릭했을 때 결과를 받을 수 있게 리스너를 할당한다
             groupClick = bid -> {
                 //send bid back
