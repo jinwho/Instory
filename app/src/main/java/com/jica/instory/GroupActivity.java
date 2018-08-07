@@ -43,7 +43,6 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.enter, R.anim.exit);
         setContentView(R.layout.activity_group);
         ButterKnife.bind(this);
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -61,7 +60,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("bid", bid);
                 setResult(RESULT_OK,resultIntent);
-                onBackPressed();
+                finish();
             };
         } else {
             groupClick = null;
@@ -82,7 +81,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.back :
                 setResult(RESULT_CANCELED);
-                onBackPressed();
+                finish();
                 break;
             case R.id.add_group :
                 AlertDialog.Builder builder = new AlertDialog.Builder(GroupActivity.this);
@@ -104,11 +103,5 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 builder.create().show();
                 break;
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.left2right, R.anim.right2left);
     }
 }

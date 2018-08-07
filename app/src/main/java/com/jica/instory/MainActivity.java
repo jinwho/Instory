@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         //FloatingActionButton 클릭시 프로필 추가 화면으로
         fab.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), NewProfileActivity.class);
-            overridePendingTransition(R.anim.enter, R.anim.exit);
             startActivity(intent);
         });
 

@@ -28,6 +28,10 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NewProfileActivity extends AppCompatActivity {
+
+    private final static int REQUEST_IMAGE_CAPTURE = 200;
+    private final static int SELECT_FROM_GALLERY = 201;
+
     //DB
     private ProfileDao profileDao = AppDatabase.getInstance(this).profileDao();
     private Profile profile;
@@ -66,7 +70,6 @@ public class NewProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.enter, R.anim.exit);
         setContentView(R.layout.activity_profile_new);
         ButterKnife.bind(this);
 
@@ -102,7 +105,7 @@ public class NewProfileActivity extends AppCompatActivity {
         //버튼 리스너
         back.setOnClickListener(v -> {
             setResult(RESULT_CANCELED);
-            onBackPressed();
+            finish();
         });
         profile_pic.setOnClickListener(v -> takePhoto());
         birthday.setOnClickListener(v -> SetCalendar());
@@ -144,7 +147,7 @@ public class NewProfileActivity extends AppCompatActivity {
         // 메인에서 호출되었으면 프로필이 생성 된 것
         // 프로필뷰에서 호출되었으면 업데이트 되었음
         setResult(RESULT_OK);
-        onBackPressed();
+        finish();
     }
 
     //생일 텍스트뷰 클릭
@@ -172,12 +175,12 @@ public class NewProfileActivity extends AppCompatActivity {
                 //카메라
                 case 0:
                     intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(intent, Constants.REQUEST_IMAGE_CAPTURE);
+                    startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
                     break;
                 //갤러리
                 case 1:
                     intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, Constants.SELECT_FROM_GALLERY);
+                    startActivityForResult(intent, SELECT_FROM_GALLERY);
                     break;
             }
         });
@@ -193,13 +196,13 @@ public class NewProfileActivity extends AppCompatActivity {
         //이미지를 가져온 경우에만
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case Constants.REQUEST_IMAGE_CAPTURE:
+                case REQUEST_IMAGE_CAPTURE:
                     Bundle extras = data.getExtras();
                     if (extras != null) {
                         bitmap = ThumbnailUtils.extractThumbnail((Bitmap) extras.get("data"), THUMBSIZE, THUMBSIZE);
                     }
                     break;
-                case Constants.SELECT_FROM_GALLERY:
+                case SELECT_FROM_GALLERY:
                     Uri uri = data.getData();
                     try {
                         bitmap = ThumbnailUtils.extractThumbnail(MediaStore.Images.Media.getBitmap(getContentResolver(), uri), THUMBSIZE, THUMBSIZE);
@@ -213,12 +216,4 @@ public class NewProfileActivity extends AppCompatActivity {
             profile_pic.setImageBitmap(profile_photo);
         }
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.left2right, R.anim.right2left);
-    }
-
-
 }

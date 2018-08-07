@@ -34,6 +34,9 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ViewProfileActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private final static int GROUP_SELECT_REQUEST = 100;
+
     //DB
     private ProfileDao profileDao = AppDatabase.getInstance(this).profileDao();
     private NoteDao noteDao = AppDatabase.getInstance(this).noteDao();
@@ -81,7 +84,6 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.enter, R.anim.exit);
         setContentView(R.layout.activity_profile_view);
         ButterKnife.bind(this);
 
@@ -123,7 +125,7 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
         add_note.setOnClickListener(this);
         back.setOnClickListener(v -> {
             setResult(RESULT_CANCELED);
-            onBackPressed();
+            finish();
         });
         //프로필 데이터가 없으면 버튼을 사라지게 한다.
         //데이터가 있는 경우에만 클릭을 허용한다.
@@ -144,7 +146,7 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case Constants.GROUP_SELECT_REQUEST:
+                case GROUP_SELECT_REQUEST:
                     //그룹 선택모드에서 bid를 받아, 로고텍스트를 바꾸고, 프로필 db의 bid를 업데이트 해준다.
                     Integer bid = data.getIntExtra("bid", 0);
                     band = bandDao.get(bid);
@@ -207,7 +209,7 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
                         //그룹
                         case 0:
                             Intent intent = new Intent(this, GroupActivity.class);
-                            startActivityForResult(intent, Constants.GROUP_SELECT_REQUEST);
+                            startActivityForResult(intent, GROUP_SELECT_REQUEST);
                             break;
                         //프로필 수정 모드, 부가적 데이터를 보냄
                         case 1:
@@ -262,9 +264,4 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.left2right, R.anim.right2left);
-    }
 }
