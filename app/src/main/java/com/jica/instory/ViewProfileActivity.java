@@ -26,8 +26,11 @@ import com.jica.instory.database.entity.Note;
 import com.jica.instory.database.entity.Profile;
 import com.jica.instory.manager.MyFileManager;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -133,7 +136,7 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
         else phone.setOnClickListener(this);
         if (profile.getEmail().isEmpty()) email.setVisibility(View.GONE);
         else email.setOnClickListener(this);
-        if (profile.getYear() == 0) birthday.setVisibility(View.GONE);
+        if (profile.getBirthday() == null) birthday.setVisibility(View.GONE);
         else birthday.setOnClickListener(this);
         if (profile.getAddress().isEmpty()) address.setVisibility(View.GONE);
         else address.setOnClickListener(this);
@@ -182,14 +185,19 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.birthday_img:
                 //오늘 날짜와 생일을 비교해서 남은 일을 알려준다.
-                if (profile.getYear() != 0) {
-                    Calendar today = Calendar.getInstance();
-                    Calendar birthday = Calendar.getInstance();
-                    birthday.set(today.get(Calendar.YEAR), profile.getMonth(), profile.getDay());
+                if (profile.getBirthday() != null) {
+                    // TODO optimize code
                     Calendar d_day = Calendar.getInstance();
-                    d_day.setTimeInMillis(birthday.getTimeInMillis() - today.getTimeInMillis());
-                    data = getString(R.string.calendar_format, profile.getYear(), profile.getMonth() + 1, profile.getDay());
-                    Toast.makeText(this, data + "\n" + "생일까지 " + (d_day.get(Calendar.DAY_OF_YEAR) - 1) + "일", Toast.LENGTH_SHORT).show();
+                    Calendar birthday = Calendar.getInstance();
+                    birthday.setTime(profile.getBirthday());
+                    birthday.set(Calendar.YEAR, d_day.get(Calendar.YEAR));
+                    d_day.setTimeInMillis(birthday.getTimeInMillis() - d_day.getTimeInMillis());
+
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    String birthday_string = format.format(profile.getBirthday());
+
+                    Toast.makeText(this, birthday_string + "\n생일까지 "
+                            + (d_day.get(Calendar.DAY_OF_YEAR) - 1) + "일 남았습니다.", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.address_img:
@@ -250,9 +258,7 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
                 builder2.setView(contents);
 
                 builder2.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> {
-                    Calendar calendar = Calendar.getInstance();
-                    String today = getString(R.string.calendar_format, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
-                    note.setDate(today);
+                    note.setDate(new Date());
                     note.setContent(contents.getText().toString());
                     note.setNid((int) noteDao.insert(note));
                     notes.add(note);

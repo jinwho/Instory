@@ -38,9 +38,5 @@
     <!-- Button -->
     <string name="add_group">그룹추가</string>
 
-    <!-- text format -->
-    <string name="calendar_format">%1$d-%2$d-%3$d</string>
-
-
     <string name="content_description">ImageView</string>
 </resources>

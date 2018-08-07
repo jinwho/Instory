@@ -21,7 +21,10 @@ import com.jica.instory.database.dao.ProfileDao;
 import com.jica.instory.manager.MyFileManager;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,8 +92,11 @@ public class NewProfileActivity extends AppCompatActivity {
             comment.setText(profile.getComment());
             phone.setText(profile.getPhone());
             email.setText(profile.getEmail());
-            if (profile.getYear() != 0)
-                birthday.setText(getString(R.string.calendar_format, profile.getYear(), profile.getMonth() + 1, profile.getDay()));
+            if (profile.getBirthday() != null) {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                String birthday_string = format.format(profile.getBirthday());
+                birthday.setText(birthday_string);
+            }
             address.setText(profile.getAddress());
 
             //이미지파일이 존재한다면 가져온다.
@@ -158,10 +164,15 @@ public class NewProfileActivity extends AppCompatActivity {
         int mDay = c.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog dpd = new DatePickerDialog(NewProfileActivity.this,
                 (view, year, monthOfYear, dayOfMonth) -> {
-                    birthday.setText(getString(R.string.calendar_format, year, monthOfYear + 1, dayOfMonth));
-                    profile.setYear(year);
-                    profile.setMonth(monthOfYear);
-                    profile.setDay(dayOfMonth);
+
+                    Calendar picked_birthday = Calendar.getInstance();
+                    picked_birthday.set(year,monthOfYear,dayOfMonth);
+                    profile.setBirthday(picked_birthday.getTime());
+
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    String birthday_string = format.format(profile.getBirthday());
+                    birthday.setText(birthday_string);
+
                 }, mYear, mMonth, mDay);
         dpd.show();
     }

@@ -14,7 +14,9 @@ import com.jica.instory.database.AppDatabase;
 import com.jica.instory.database.dao.NoteDao;
 import com.jica.instory.database.entity.Note;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,11 +67,18 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         //위치에 해당하는 프로필
         final Note note = notes.get(position);
 
+        //set date print format
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String writeDate = format.format(note.getDate());
+
+
         //프로필을 view 의 값으로 할당
-        holder.date.setText(note.getDate());
+        holder.date.setText(writeDate);
         holder.contents.setText(note.getContent());
         holder.del.setOnClickListener(v -> {
             //DB 속도 때문에 빨리 누르면 에러 남
+            //TODO ViewHolder class 에서 지울 것
+            //callback 패턴으로 메인 딜리트 함수를 호출시켜야 할 듯
             noteDao.delete(note);
             removeAt(position);
         });

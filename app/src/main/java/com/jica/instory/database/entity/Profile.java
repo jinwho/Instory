@@ -4,20 +4,24 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 
-import java.util.Calendar;
+import com.jica.instory.database.Converter.DateTypeConverter;
+
 import java.util.Date;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
-import static android.arch.persistence.room.ForeignKey.NO_ACTION;
 import static android.arch.persistence.room.ForeignKey.SET_NULL;
 
 
 @Entity(foreignKeys = @ForeignKey(entity = Band.class,parentColumns = "bid",childColumns = "bid",onDelete = SET_NULL, onUpdate = CASCADE),
         indices = {@Index("bid")})
+@TypeConverters({DateTypeConverter.class})
 public class Profile {
     @PrimaryKey(autoGenerate = true)
+
     private Integer pid;
+
     //해당 하는 그룹의 ID
     private Integer bid;
 
@@ -32,39 +36,24 @@ public class Profile {
     private String address;
 
     // 생일
-    private int year;
-    private int month;
-    private int day;
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
-    }
+    private Date birthday;
 
     //프로필 사진 파일 이름
     private String filename;
 
 
+
+
     //getters, setters
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
     public String getFilename() {
         return filename;
     }

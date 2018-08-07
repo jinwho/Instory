@@ -63,15 +63,15 @@ public class BandAdapter extends RecyclerView.Adapter<BandAdapter.BandViewHolder
     public void onBindViewHolder(@NonNull BandViewHolder holder, int position) {
         final Band band = bands.get(position);
 
+        //TODO 여기 코드 뷰홀더로 옮길 것!!
+
         holder.name.setText(band.getName());
         holder.del.setOnClickListener(v -> {
             bandDao.delete(bands.get(position));
             removeAt(position);
         });
         if (groupClick != null){
-            holder.itemView.setOnClickListener(v -> {
-                groupClick.onGroupClick(band.getBid());
-            });
+            holder.itemView.setOnClickListener(v -> groupClick.onGroupClick(band.getBid()));
         }
 
     }

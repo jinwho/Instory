@@ -12,7 +12,7 @@ import com.jica.instory.database.entity.Band;
 import com.jica.instory.database.entity.Note;
 import com.jica.instory.database.entity.Profile;
 
-@Database(entities = {Band.class,Profile.class,Note.class}, version = 2, exportSchema = false)
+@Database(entities = {Band.class,Profile.class,Note.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;

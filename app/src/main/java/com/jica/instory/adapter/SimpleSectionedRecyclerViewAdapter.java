@@ -11,7 +11,10 @@ import android.widget.TextView;
 
 import java.util.Arrays;
 import java.util.Comparator;
-
+/*
+* i didn't write the code..
+* TODO must understand and optimize
+*/
 public class SimpleSectionedRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final Context mContext;
