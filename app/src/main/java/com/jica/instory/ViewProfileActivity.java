@@ -24,7 +24,7 @@ import com.jica.instory.database.dao.ProfileDao;
 import com.jica.instory.database.entity.Band;
 import com.jica.instory.database.entity.Note;
 import com.jica.instory.database.entity.Profile;
-import com.jica.instory.manager.MyFileManager;
+import com.jica.instory.manager.ImageFileManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -114,7 +114,7 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
             comment.setText(tComment);
         }
         //파일이름이 존재하면 파일을 읽어와서 보여준다.
-        Bitmap bitmap = MyFileManager.getInstance().loadImage(this, profile.getFilename());
+        Bitmap bitmap = ImageFileManager.getInstance().loadImage(this, profile.getFilename());
         if (bitmap != null) profile_pic.setImageBitmap(bitmap);
 
         //set note view

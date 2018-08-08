@@ -4,22 +4,21 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 //not use yet
-public class MyFileManager {
+public class ImageFileManager {
 
-    private static MyFileManager INSTANCE = null;
+    private static ImageFileManager INSTANCE = null;
 
-    private MyFileManager() {
+    private ImageFileManager() {
     }
 
-    public static MyFileManager getInstance() {
+    public static ImageFileManager getInstance() {
 
         if (INSTANCE == null) {
-            INSTANCE = new MyFileManager();
+            INSTANCE = new ImageFileManager();
         }
         return INSTANCE;
     }

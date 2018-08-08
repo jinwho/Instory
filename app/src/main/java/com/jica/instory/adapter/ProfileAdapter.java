@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.jica.instory.R;
 import com.jica.instory.ViewProfileActivity;
 import com.jica.instory.database.entity.ProfileMinimal;
-import com.jica.instory.manager.MyFileManager;
+import com.jica.instory.manager.ImageFileManager;
 
 import java.util.List;
 
@@ -81,7 +81,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
                 holder.comment.setText(comment);
             }
             //사진이 있을 경우에만 보여준다.
-            Bitmap bitmap = MyFileManager.getInstance().loadImage(context, profile.getFilename());
+            Bitmap bitmap = ImageFileManager.getInstance().loadImage(context, profile.getFilename());
             if (bitmap != null) holder.profile_pic.setImageBitmap(bitmap);
 
             //해당 item 클릭시 ViewProfileActivity 에 id를 전달하고 넘어간다.

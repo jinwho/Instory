@@ -18,12 +18,11 @@ import android.widget.Toast;
 import com.jica.instory.database.AppDatabase;
 import com.jica.instory.database.entity.Profile;
 import com.jica.instory.database.dao.ProfileDao;
-import com.jica.instory.manager.MyFileManager;
+import com.jica.instory.manager.ImageFileManager;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -100,7 +99,7 @@ public class NewProfileActivity extends AppCompatActivity {
             address.setText(profile.getAddress());
 
             //이미지파일이 존재한다면 가져온다.
-            Bitmap bitmap = MyFileManager.getInstance().loadImage(this, profile.getFilename());
+            Bitmap bitmap = ImageFileManager.getInstance().loadImage(this, profile.getFilename());
             if (bitmap != null) profile_pic.setImageBitmap(bitmap);
 
         } else {
@@ -138,7 +137,7 @@ public class NewProfileActivity extends AppCompatActivity {
                 profile.setFilename(filename);
             }
             //파일 저장함
-            MyFileManager.getInstance().saveImage(profile_photo, this, profile.getFilename());
+            ImageFileManager.getInstance().saveImage(profile_photo, this, profile.getFilename());
         }
         //pid는 수정시에만 존재한다(autoGenerate 때문에)
         if (profile.getPid() != null) {

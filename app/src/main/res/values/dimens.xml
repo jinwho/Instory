@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="default_elevation">4dp</dimen>
+    <dimen name="default_elevation">1dp</dimen>
     <dimen name="default_toolbar_height">56dp</dimen>
     <dimen name="default_animation_duration">500</dimen>
 </resources>
