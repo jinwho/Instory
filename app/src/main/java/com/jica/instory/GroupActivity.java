@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -47,9 +48,10 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         ButterKnife.bind(this);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setHasFixedSize(true);
+        rv.addItemDecoration(new DividerItemDecoration(this,LinearLayoutManager.VERTICAL));
 
         // 호출 액티비티가 result를 원한다면 선택모드로 바꿔서 보여준다.
-        OnGroupClickListener groupClick;
+        OnGroupClickListener groupClick = null;
         //그룹 선택 모드
         if (getCallingActivity() != null) {
             //로고 텍스트를 "그룹관리" 에서 "그룹선택" 으로 바꾸기
@@ -62,8 +64,6 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 setResult(RESULT_OK,resultIntent);
                 finish();
             };
-        } else {
-            groupClick = null;
         }
 
         //get db

@@ -109,7 +109,7 @@ public class ViewProfileActivity extends AppCompatActivity implements View.OnCli
         name.setText(profile.getName());
         String tComment = profile.getComment();
         if (tComment.isEmpty()) {
-            comment.setVisibility(View.INVISIBLE);
+            comment.setVisibility(View.GONE);
         } else {
             comment.setText(tComment);
         }
