@@ -7,6 +7,8 @@ Android Profile Manager and Memo
 
 ## 실행 화면
 
+### 스플래시 
+
 <img width="360" height="640" src="https://github.com/jinwho/Instory/blob/master/sample_images/splash.png">
 
 ### 메인 화면
