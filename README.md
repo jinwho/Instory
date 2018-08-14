@@ -1,4 +1,4 @@
-# Instory
+# MyPeople
 Android Profile Manager and Memo
 
 ## 앱 소개
